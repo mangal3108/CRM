@@ -71,6 +71,16 @@ services:
         value: "60000"
 
     routes:
+      # Proxy API and WebSocket calls to the backend service (must come before the SPA catch-all)
+      - type: rewrite
+        source: /api/*
+        destination: https://nexacrm-backend-2akp.onrender.com/api/*
+      - type: rewrite
+        source: /ws/*
+        destination: https://nexacrm-backend-2akp.onrender.com/ws/*
+      - type: rewrite
+        source: /ws
+        destination: https://nexacrm-backend-2akp.onrender.com/ws
       # Serve index.html for all paths so React Router works
       - type: rewrite
         source: /*
