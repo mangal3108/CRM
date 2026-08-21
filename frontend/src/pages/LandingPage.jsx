@@ -70,7 +70,7 @@ const trustedLogos = ['Tapflo', 'Blue Ocean', 'Dentalsoft', 'Hotstar', 'IFL', 'D
 /* Bento grid features */
 const bentoFeatures = [
   { icon: Users, label: 'Lead Management', desc: 'Capture, score, and route leads automatically with AI-powered insights.', span: 'md:col-span-2', gradient: 'from-brand-500 to-cyan-400' },
-  { icon: BrainCircuit, label: 'AI Engine', desc: 'Smart recommendations, auto-summaries, and next-best-action prompts.', span: '', gradient: 'from-violet-500 to-brand-500' },
+  { icon: BrainCircuit, label: 'Bhadawar', desc: 'Smart recommendations, auto-summaries, and next-best-action prompts.', span: '', gradient: 'from-violet-500 to-brand-500' },
   { icon: Kanban, label: 'Pipeline Board', desc: 'Drag-and-drop Kanban board to visualise every deal stage at a glance.', span: '', gradient: 'from-accent-500 to-emerald-400' },
   { icon: MessageCircle, label: 'Communication Hub', desc: 'Unified inbox for email, WhatsApp, and call logs in one timeline.', span: 'md:col-span-2', gradient: 'from-brand-600 to-accent-500' },
   { icon: Zap, label: 'Automation', desc: 'No-code workflows that trigger tasks, emails, and follow-ups on autopilot.', span: '', gradient: 'from-amber-500 to-rose-500' },
@@ -131,7 +131,7 @@ const pricingPlans = [
     price: '₹2,499',
     period: '/user/mo',
     desc: 'For growing teams that need more power.',
-    features: ['Unlimited users', '50K contacts', 'AI Engine access', 'Automation workflows', 'Priority support', 'Custom fields', 'API access'],
+    features: ['Unlimited users', '50K contacts', 'Bhadawar access', 'Automation workflows', 'Priority support', 'Custom fields', 'API access'],
     cta: 'Start Trial',
     highlight: true,
   },

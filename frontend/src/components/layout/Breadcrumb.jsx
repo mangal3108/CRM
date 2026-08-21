@@ -9,7 +9,7 @@ const ROUTE_LABELS = {
   '/task-followup':  'Tasks',
   '/customers':      'Customers',
   '/communication':  'Messages',
-  '/ai-engine':      'AI Engine',
+  '/ai-engine':      'Bhadawar',
   '/automation':     'Automation',
   '/invoices':       'Invoices',
   '/analytics':      'Analytics',
