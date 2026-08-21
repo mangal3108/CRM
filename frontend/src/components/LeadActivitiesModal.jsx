@@ -49,7 +49,7 @@ const ACTIVITIES = [
     description: 'Fill Details for Meeting person and share details',
     hours: null,
     icon: Users,
-    color: { bg: '#eff6ff', border: '#93c5fd', header: '#6a56ec', badge: 'bg-brand-100 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300', step: 'bg-brand-500' },
+    color: { bg: '#eff6ff', border: '#93c5fd', header: '#2f97f2', badge: 'bg-brand-100 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300', step: 'bg-brand-500' },
     fields: [
       { key: 'personName',       label: 'Person Name',                   type: 'text' },
       { key: 'personDesignation',label: 'Designation',                   type: 'text' },

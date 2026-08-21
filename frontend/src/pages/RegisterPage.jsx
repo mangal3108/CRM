@@ -21,7 +21,7 @@ function RegisterParticles() {
       {particles.map((p) => (
         <span key={p.id} className="absolute rounded-full register-particle"
           style={{ width: p.size, height: p.size, left: p.left, top: p.top,
-            background: p.id % 2 === 0 ? 'rgba(106,86,236,0.25)' : 'rgba(20,184,166,0.25)',
+            background: p.id % 2 === 0 ? 'rgba(47,151,242,0.25)' : 'rgba(20,184,166,0.25)',
             animationDelay: p.delay, animationDuration: p.duration }} />
       ))}
     </div>
@@ -49,7 +49,7 @@ export default function RegisterPage() {
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative z-10 grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_54px_rgba(106,86,236,0.12)] md:max-h-[min(520px,90vh)] md:grid-cols-[1.05fr_0.95fr]"
+        className="relative z-10 grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_54px_rgba(47,151,242,0.12)] md:max-h-[min(520px,90vh)] md:grid-cols-[1.05fr_0.95fr]"
       >
         {/* Left — branding & highlights */}
         <div className="relative hidden flex-col justify-center overflow-hidden bg-gradient-to-br from-brand-600 via-brand-500 to-accent-500 p-6 text-white sm:p-8 md:flex">
@@ -68,8 +68,7 @@ export default function RegisterPage() {
           <div className="relative z-20">
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }}>
               <Link to="/" className="inline-flex items-center gap-2 mb-5">
-                <BrandLogo variant="icon" className="h-9 w-9" />
-                <span className="text-lg font-bold tracking-tight">Internite AI</span>
+                <BrandLogo variant="icon" tone="dark" className="h-9 w-auto" />
               </Link>
             </motion.div>
 
@@ -140,7 +139,7 @@ export default function RegisterPage() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}
             className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link to="/login"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-500 px-6 text-sm font-bold text-white shadow-[0_14px_28px_rgba(106,86,236,0.22)] transition hover:-translate-y-0.5 hover:bg-brand-600">
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-500 px-6 text-sm font-bold text-white shadow-[0_14px_28px_rgba(47,151,242,0.22)] transition hover:-translate-y-0.5 hover:bg-brand-600">
               <ArrowLeft size={15} />
               Back to sign in
             </Link>

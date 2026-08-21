@@ -206,7 +206,7 @@ function CursorGlow() {
         height: 400,
         x: -200,
         y: -200,
-        background: 'radial-gradient(circle, rgba(106,86,236,0.06) 0%, rgba(20,184,166,0.03) 40%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(47,151,242,0.06) 0%, rgba(20,184,166,0.03) 40%, transparent 70%)',
         borderRadius: '50%',
       }}
     />
@@ -525,7 +525,7 @@ function TestimonialWall({ items }) {
 }
 
 /* ── SpotlightCard ── */
-function SpotlightCard({ children, className = '', spotlightColor = 'rgba(106, 86, 236, 0.18)' }) {
+function SpotlightCard({ children, className = '', spotlightColor = 'rgba(47, 151, 242, 0.18)' }) {
   const cardRef = useRef(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [opacity, setOpacity] = useState(0)
@@ -561,7 +561,7 @@ function FloatingParticles({ count = 24 }) {
       {particles.map((p) => (
         <span key={p.id} className="absolute rounded-full landing-particle"
           style={{ width: p.size, height: p.size, left: p.left, top: p.top,
-            background: p.id % 3 === 0 ? 'rgba(106,86,236,0.5)' : p.id % 3 === 1 ? 'rgba(20,184,166,0.4)' : 'rgba(99,102,241,0.35)',
+            background: p.id % 3 === 0 ? 'rgba(47,151,242,0.5)' : p.id % 3 === 1 ? 'rgba(20,184,166,0.4)' : 'rgba(99,102,241,0.35)',
             opacity: p.opacity, animationDelay: p.delay, animationDuration: p.duration }} />
       ))}
     </div>
@@ -703,7 +703,7 @@ function Chatbot() {
         )}
       </AnimatePresence>
       <motion.button type="button" onClick={() => setIsOpen((c) => !c)} whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
-        className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-gradient-to-r from-brand-500 to-accent-500 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(106,86,236,0.28)] transition">
+        className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-gradient-to-r from-brand-500 to-accent-500 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(47,151,242,0.28)] transition">
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white/25">
           <BotMessageSquare size={18} strokeWidth={2.1} /></span>
         <span className="hidden pr-1 sm:inline">AI Chat</span>
@@ -769,10 +769,9 @@ export default function LandingPage() {
           <div className="relative z-10">
             {/* Navbar */}
             <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}
-              className="sticky top-4 z-30 mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/70 px-3.5 py-2 shadow-[0_10px_28px_rgba(106,86,236,0.08)] backdrop-blur-2xl">
+              className="sticky top-4 z-30 mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/70 px-3.5 py-2 shadow-[0_10px_28px_rgba(47,151,242,0.08)] backdrop-blur-2xl">
               <Link to="/" className="group flex min-w-0 items-center gap-2 rounded-full pr-2">
-                <BrandLogo variant="icon" className="h-7 w-7 shrink-0" />
-                <span className="text-[15px] font-bold tracking-tight text-slate-900">Internite AI</span>
+                <BrandLogo variant="icon" className="h-7 w-auto shrink-0" />
               </Link>
               <nav aria-label="Primary" className="hidden items-center gap-1 text-[12px] font-semibold text-slate-600 lg:flex">
                 {navItems.map((item) => (
@@ -1218,7 +1217,7 @@ export default function LandingPage() {
 
           {/* ═══ FOOTER ═══ */}
           <footer className="relative overflow-hidden bg-slate-950 px-5 pb-20 pt-12 text-slate-300 sm:px-8 sm:pb-24 lg:px-10">
-            <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_20%,rgba(106,86,236,0.15),transparent_32%),radial-gradient(circle_at_74%_84%,rgba(20,184,166,0.12),transparent_30%)]" />
+            <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_20%,rgba(47,151,242,0.15),transparent_32%),radial-gradient(circle_at_74%_84%,rgba(20,184,166,0.12),transparent_30%)]" />
             <div className="relative mx-auto grid max-w-7xl gap-7 lg:grid-cols-[1.35fr_0.7fr_0.95fr] lg:gap-12">
               <div id="contact" className="max-w-xl">
                 <Link to="/" className="inline-flex items-center gap-2.5 text-white" aria-label="Kriscel Tech home">
@@ -1326,13 +1325,13 @@ export default function LandingPage() {
         .landing-3d-orb { position: relative; width: 200px; height: 200px; }
         .landing-3d-orb__inner {
           position: absolute; inset: 25px; border-radius: 50%;
-          background: radial-gradient(circle at 35% 35%, rgba(106,86,236,0.4), rgba(20,184,166,0.2) 50%, rgba(99,102,241,0.15) 80%, transparent);
-          box-shadow: inset 0 0 30px rgba(106,86,236,0.2), 0 0 60px rgba(106,86,236,0.15);
+          background: radial-gradient(circle at 35% 35%, rgba(47,151,242,0.4), rgba(20,184,166,0.2) 50%, rgba(99,102,241,0.15) 80%, transparent);
+          box-shadow: inset 0 0 30px rgba(47,151,242,0.2), 0 0 60px rgba(47,151,242,0.15);
           animation: landingOrbPulse 4s ease-in-out infinite;
         }
         .landing-3d-orb__ring {
           position: absolute; inset: 0; border-radius: 50%;
-          border: 1.5px solid rgba(106,86,236,0.2);
+          border: 1.5px solid rgba(47,151,242,0.2);
           animation: landingOrbSpin 12s linear infinite;
         }
         .landing-3d-orb__ring--2 { inset: 10px; border-color: rgba(20,184,166,0.15); animation-duration: 18s; animation-direction: reverse; }
@@ -1357,7 +1356,7 @@ export default function LandingPage() {
         }
         .landing-glitch:hover::before {
           animation: landingGlitch1 0.3s ease-in-out;
-          color: rgba(106,86,236,0.7);
+          color: rgba(47,151,242,0.7);
           opacity: 0.8;
         }
         .landing-glitch:hover::after {
@@ -1384,7 +1383,7 @@ export default function LandingPage() {
 
         /* Animated gradient border */
         .landing-gradient-border {
-          background: linear-gradient(135deg, #6a56ec, #14b8a6, #8b5cf6, #6a56ec);
+          background: linear-gradient(135deg, #2f97f2, #14b8a6, #8b5cf6, #2f97f2);
           background-size: 300% 300%;
           animation: landingGradientBorder 4s ease infinite;
         }
@@ -1397,7 +1396,7 @@ export default function LandingPage() {
         /* Typewriter cursor */
         .landing-typewriter-cursor {
           animation: landingBlink 1s step-end infinite;
-          color: #6a56ec;
+          color: #2f97f2;
           font-weight: 300;
         }
         @keyframes landingBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }

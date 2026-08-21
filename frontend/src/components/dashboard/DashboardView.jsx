@@ -108,7 +108,7 @@ export default function DashboardPage() {
         {/* Call Intelligence */}
         <SpotlightCard
           className="dashboard-color-card p-4"
-          spotlightColor="rgba(106, 86, 236, 0.2)"
+          spotlightColor="rgba(47, 151, 242, 0.2)"
           style={tintStyle('6, 182, 212')}
         >
           <div className="flex items-center gap-2 mb-3">
@@ -231,8 +231,8 @@ export default function DashboardPage() {
                 const accentRgb = {
                   prediction: '16, 185, 129',
                   warning: '245, 158, 11',
-                  opportunity: '106, 86, 236',
-                }[insight.type] || '106, 86, 236'
+                  opportunity: '47, 151, 242',
+                }[insight.type] || '47, 151, 242'
                 return (
                   <div
                     key={insight.id}
