@@ -22,7 +22,7 @@ services:
 
       # ── CORS (frontend origin + credentialed requests) ─
       - key: CORS_ORIGINS
-        value: "https://nexacrmai.com,https://www.nexacrmai.com"
+        value: "https://nexacrmai.com,https://www.nexacrmai.com,https://nexacrm-frontend-9hzb.onrender.com"
       - key: CORS_ALLOW_CREDENTIALS
         value: "true"
 
