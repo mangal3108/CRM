@@ -184,7 +184,7 @@ public class WorkspaceSettingsService {
 
     private List<Map<String, Object>> defaultGeneralSettings() {
         List<Map<String, Object>> defaults = new ArrayList<>();
-        defaults.add(setting("companyName", "Company Name", "NexaCRM Workspace"));
+        defaults.add(setting("companyName", "Company Name", "Internite AI Workspace"));
         defaults.add(setting("timezone", "Timezone", "Asia/Kolkata (IST)"));
         defaults.add(setting("currency", "Currency", "INR (₹)"));
         defaults.add(setting("language", "Language", "English"));

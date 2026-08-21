@@ -5,6 +5,7 @@ import { ShieldCheck, Eye, EyeOff, ArrowRight, Building2, Users, CreditCard, Loc
 import { useAuthStore } from '../store/authStore'
 import { authAPI } from '../services/api'
 import toast from 'react-hot-toast'
+import BrandLogo from '../components/brand/BrandLogo'
 
 /* ── Floating particles ── */
 function PlatformParticles() {
@@ -23,7 +24,7 @@ function PlatformParticles() {
       {particles.map((p) => (
         <span key={p.id} className="absolute rounded-full platform-particle"
           style={{ width: p.size, height: p.size, left: p.left, top: p.top,
-            background: p.id % 2 === 0 ? 'rgba(14,165,233,0.25)' : 'rgba(20,184,166,0.25)',
+            background: p.id % 2 === 0 ? 'rgba(106,86,236,0.25)' : 'rgba(20,184,166,0.25)',
             animationDelay: p.delay, animationDuration: p.duration }} />
       ))}
     </div>
@@ -105,7 +106,7 @@ export default function PlatformLoginPage() {
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative z-10 grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_54px_rgba(14,165,233,0.12)] md:max-h-[min(520px,90vh)] md:grid-cols-[1.05fr_0.95fr]"
+        className="relative z-10 grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_54px_rgba(106,86,236,0.12)] md:max-h-[min(520px,90vh)] md:grid-cols-[1.05fr_0.95fr]"
       >
         {/* Left — branding & highlights */}
         <div className="relative hidden flex-col justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-brand-900 p-6 text-white sm:p-8 md:flex">
@@ -124,8 +125,8 @@ export default function PlatformLoginPage() {
           <div className="relative z-20">
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }}>
               <Link to="/" className="inline-flex items-center gap-2 mb-5">
-                <img src="/brand/nexacrm-ai-icon.png" alt="" className="h-9 w-9 object-contain brightness-0 invert" />
-                <span className="text-lg font-bold tracking-tight">NexaCRM AI</span>
+                <BrandLogo variant="icon" className="h-9 w-9" />
+                <span className="text-lg font-bold tracking-tight">Internite AI</span>
               </Link>
             </motion.div>
 
@@ -165,9 +166,9 @@ export default function PlatformLoginPage() {
         <div className="flex flex-col justify-center px-7 py-6 sm:px-10 lg:px-12">
           <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
             <Link to="/" className="mb-5 inline-flex w-fit items-center gap-2 text-sm font-bold text-slate-900 transition hover:text-brand-600"
-              aria-label="Go to NexaCRM AI home">
-              <img src="/brand/nexacrm-ai-icon.png" alt="" className="h-8 w-8 object-contain" />
-              NexaCRM AI
+              aria-label="Go to Internite AI home">
+              <BrandLogo variant="icon" className="h-8 w-8" />
+              Internite AI
             </Link>
           </motion.div>
 
@@ -194,14 +195,14 @@ export default function PlatformLoginPage() {
                 <span className="mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Admin Email</span>
                 <motion.span
                   animate={focusedField === 'email' ? {
-                    borderColor: 'rgba(14,165,233,0.5)',
-                    boxShadow: '0 0 0 4px rgba(14,165,233,0.08), 0 0 20px rgba(14,165,233,0.06)',
+                    borderColor: 'rgba(106,86,236,0.5)',
+                    boxShadow: '0 0 0 4px rgba(106,86,236,0.08), 0 0 20px rgba(106,86,236,0.06)',
                   } : { borderColor: 'rgba(226,232,240,1)', boxShadow: '0 0 0 0 transparent' }}
                   className="flex h-11 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-slate-500 transition">
                   <Mail size={17} className={focusedField === 'email' ? 'text-brand-500' : ''} />
                   <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                     onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
-                    placeholder="admin@nexacrm.com" autoComplete="email" required
+                    placeholder="admin@internite.ai" autoComplete="email" required
                     className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-slate-900 outline-none placeholder:text-slate-400" />
                 </motion.span>
               </label>
@@ -211,8 +212,8 @@ export default function PlatformLoginPage() {
                 <span className="mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Password</span>
                 <motion.span
                   animate={focusedField === 'password' ? {
-                    borderColor: 'rgba(14,165,233,0.5)',
-                    boxShadow: '0 0 0 4px rgba(14,165,233,0.08), 0 0 20px rgba(14,165,233,0.06)',
+                    borderColor: 'rgba(106,86,236,0.5)',
+                    boxShadow: '0 0 0 4px rgba(106,86,236,0.08), 0 0 20px rgba(106,86,236,0.06)',
                   } : { borderColor: 'rgba(226,232,240,1)', boxShadow: '0 0 0 0 transparent' }}
                   className="flex h-11 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-slate-500 transition">
                   <Lock size={17} className={focusedField === 'password' ? 'text-brand-500' : ''} />

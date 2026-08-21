@@ -11,7 +11,7 @@ const INTEGRATIONS = [
   {
     id: 'facebook', name: 'Facebook', category: 'Social Media',
     tagline: 'Capture leads from Facebook Pages & Ads',
-    description: 'Connect your Facebook Business account to automatically import leads from Lead Ads, Messenger conversations, and Page interactions into NexaCRM.',
+    description: 'Connect your Facebook Business account to automatically import leads from Lead Ads, Messenger conversations, and Page interactions into Internite.',
     features: ['Lead Ads sync', 'Messenger inbox', 'Page comments', 'Ad campaign tracking'],
     color: '#1877F2', bg: '#EBF3FF',
     authType: 'oauth', oauthProvider: 'Meta',
@@ -60,7 +60,7 @@ const INTEGRATIONS = [
     authType: 'oauth', oauthProvider: 'Reddit',
     docsUrl: 'https://www.reddit.com/prefs/apps',
     defaultValues: {
-      userAgent: 'NexaCRM/1.0 by u/your_username',
+      userAgent: 'Internite/1.0 by u/your_username',
       subredditKeywords: 'crm,sales,lead generation'
     },
     fields: [
@@ -68,7 +68,7 @@ const INTEGRATIONS = [
       { key: 'clientSecret', label: 'Reddit Client Secret', placeholder: 'xxxxxxxxxxxx', secret: true },
       { key: 'refreshToken', label: 'Refresh Token', placeholder: '1234567890_refresh_token', secret: true },
       { key: 'username', label: 'Reddit Username', placeholder: 'your_username' },
-      { key: 'userAgent', label: 'User Agent (optional)', placeholder: 'NexaCRM/1.0 by u/your_username' },
+      { key: 'userAgent', label: 'User Agent (optional)', placeholder: 'Internite/1.0 by u/your_username' },
       { key: 'subredditKeywords', label: 'Subreddit Keywords (optional)', placeholder: 'crm,sales,saas,startups' },
     ],
     Icon: () => <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7"><circle cx="12" cy="12" r="10" fill="#FF4500"/><path d="M16.58 14.38c.07.32.11.64.11.97 0 2.1-2.1 3.8-4.69 3.8-2.59 0-4.69-1.7-4.69-3.8 0-.33.04-.65.12-.97a1.5 1.5 0 1 1 .97-2.28 6.15 6.15 0 0 1 3.6-1.16c1.34 0 2.59.44 3.6 1.16a1.5 1.5 0 1 1 .98 2.28Z" fill="white"/><circle cx="10.14" cy="14.07" r=".9" fill="#FF4500"/><circle cx="13.86" cy="14.07" r=".9" fill="#FF4500"/><path d="M10.2 16.18c.43.34 1.03.54 1.8.54.77 0 1.37-.2 1.8-.54" stroke="#FF4500" strokeWidth="1.1" strokeLinecap="round"/><path d="m14.97 9.74.6-2.08 1.8.42" stroke="white" strokeWidth="1.1" strokeLinecap="round"/></svg>,
@@ -76,7 +76,7 @@ const INTEGRATIONS = [
   {
     id: 'whatsapp', name: 'WhatsApp Business', category: 'Messaging',
     tagline: 'Send WhatsApp messages via AKNexus',
-    description: 'Connect your AKNexus WhatsApp instance to send messages directly from NexaCRM, workflows, lead automation, and the communication inbox.',
+    description: 'Connect your AKNexus WhatsApp instance to send messages directly from Internite, workflows, lead automation, and the communication inbox.',
     features: ['AKNexus API sending', 'Workflow WhatsApp actions', 'Lead auto-welcome messages', 'Legacy provider support'],
     color: '#25D366', bg: '#F0FFF4',
     authType: 'apikey',
@@ -102,7 +102,7 @@ const INTEGRATIONS = [
   {
     id: 'voice_call_agent', name: 'Voice Call Agent', category: 'Messaging',
     tagline: 'Auto-call new leads using Bolna or webhook providers',
-    description: 'Run outbound AI calls with Bolna directly from NexaCRM, or keep using any webhook-based calling agent.',
+    description: 'Run outbound AI calls with Bolna directly from Internite, or keep using any webhook-based calling agent.',
     features: ['Bolna outbound calls', 'Auto-call on lead create', 'Webhook fallback mode', 'Transcript + call activity logging'],
     color: '#7C3AED', bg: '#F5F1FF',
     authType: 'apikey',
@@ -128,7 +128,7 @@ const INTEGRATIONS = [
       { key: 'enabled', label: 'Enabled (optional, true/false)', placeholder: 'true' },
       { key: 'autoCallOnLeadCreate', label: 'Auto Call On New Lead (optional, true/false)', placeholder: 'true' },
       { key: 'autoAssignHotLead', label: 'Auto Assign Hot Lead (optional, true/false)', placeholder: 'true' },
-      { key: 'agentName', label: 'Agent Name (optional)', placeholder: 'Riya from NexaCRM' },
+      { key: 'agentName', label: 'Agent Name (optional)', placeholder: 'Riya from Internite' },
       { key: 'scriptTemplate', label: 'Call Script Template (optional)', placeholder: 'Hi {leadName}, this is {agentName}...' },
     ],
     Icon: PhoneCall,
@@ -136,7 +136,7 @@ const INTEGRATIONS = [
   {
     id: 'gmail', name: 'Gmail / Google', category: 'Email',
     tagline: 'Send emails and sync your Gmail inbox',
-    description: 'Connect Gmail via Google OAuth to send personalized emails, track opens and replies, and sync email conversations with leads directly inside NexaCRM.',
+    description: 'Connect Gmail via Google OAuth to send personalized emails, track opens and replies, and sync email conversations with leads directly inside Internite.',
     features: ['Send & receive emails', 'Open/click tracking', 'Thread sync', 'AI email drafts'],
     color: '#EA4335', bg: '#FFF4F3',
     authType: 'oauth', oauthProvider: 'Google',
@@ -166,7 +166,7 @@ const INTEGRATIONS = [
   {
     id: 'google_sheets_leads', name: 'Google Sheets Leads', category: 'Data Sync',
     tagline: 'Manual sync from public Google Sheet to CRM Leads',
-    description: 'Connect your public Google Sheet and manually sync lead rows into NexaCRM without Google Cloud Console or OAuth setup.',
+    description: 'Connect your public Google Sheet and manually sync lead rows into Internite without Google Cloud Console or OAuth setup.',
     features: ['Manual configure', 'No console setup', 'Header auto-mapping', 'One-click lead sync'],
     color: '#16A34A', bg: '#EDFFF3',
     authType: 'manual',

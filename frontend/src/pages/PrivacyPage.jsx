@@ -187,7 +187,7 @@ export default function PrivacyPage() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-white/60 transition hover:text-white mb-8">
               <ArrowLeft size={16} />
-              Back to NexaCRM AI
+              Back to Internite AI
             </Link>
           </motion.div>
 
@@ -217,7 +217,7 @@ export default function PrivacyPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}
           className="mb-10 rounded-2xl border border-slate-100 bg-slate-50 p-6 text-sm leading-7 text-slate-600">
           <p className="mb-4">
-            <strong className="text-slate-800">Kriscel Tech Private Limited</strong>, a private limited company incorporated under the laws of India ("<strong>Company</strong>", "<strong>we</strong>", "<strong>us</strong>" or "<strong>our</strong>"), manages and operates the <strong>NexaCRM AI</strong> platform, including the website (<a href="https://nexacrmai.com" className="text-brand-500 hover:text-brand-600 font-semibold">nexacrmai.com</a>), domain name, and any other linked pages, features, content, mobile applications, APIs, or any other services we offer from time to time (collectively the "<strong>Platform</strong>") which is a cloud-based SaaS platform that enables users to manage leads, customers, sales pipelines, communications, AI-powered analytics, automation workflows, invoicing, and team collaboration for organizations.
+            <strong className="text-slate-800">Kriscel Tech Private Limited</strong>, a private limited company incorporated under the laws of India ("<strong>Company</strong>", "<strong>we</strong>", "<strong>us</strong>" or "<strong>our</strong>"), manages and operates the <strong>Internite AI</strong> platform, including the website (<a href="https://internite.online" className="text-brand-500 hover:text-brand-600 font-semibold">internite.online</a>), domain name, and any other linked pages, features, content, mobile applications, APIs, or any other services we offer from time to time (collectively the "<strong>Platform</strong>") which is a cloud-based SaaS platform that enables users to manage leads, customers, sales pipelines, communications, AI-powered analytics, automation workflows, invoicing, and team collaboration for organizations.
           </p>
           <p className="mb-4">
             All users of the Platform are advised to read and understand our Privacy Policy and <Link to="/terms" className="text-brand-500 hover:text-brand-600 font-semibold">Terms &amp; Conditions</Link> carefully before registering, accessing or using the Platform. By giving your consent for accessing the Platform, you expressly consent to our collection, storage, use and disclosure of the Information in accordance with the terms of this Privacy Policy, as amended from time to time.
@@ -295,7 +295,7 @@ export default function PrivacyPage() {
 
         {/* Copyright */}
         <div className="mt-16 border-t border-slate-100 pt-8 text-center">
-          <p className="text-sm text-slate-600 mb-4">Thank you for trusting <strong>NexaCRM AI</strong> with your data.</p>
+          <p className="text-sm text-slate-600 mb-4">Thank you for trusting <strong>Internite AI</strong> with your data.</p>
           <p className="text-xs text-slate-400">
             COPYRIGHT © 2026 – Kriscel Tech Pvt. Ltd., India. All rights reserved.
           </p>

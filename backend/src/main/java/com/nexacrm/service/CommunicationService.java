@@ -101,7 +101,7 @@ public class CommunicationService {
     @Value("${nexacrm.auto-reply.enabled:true}")
     private boolean autoReplyEnabled;
 
-    @Value("${nexacrm.auto-reply.message:Thanks for messaging NexaCRM! We received your message and will get back to you shortly.}")
+    @Value("${nexacrm.auto-reply.message:Thanks for messaging Internite AI! We received your message and will get back to you shortly.}")
     private String autoReplyMessage;
 
     @Value("${nexacrm.call-agent.enabled:false}")
@@ -1137,7 +1137,7 @@ public class CommunicationService {
 
         String callScript = trim(script);
         if (callScript.isBlank()) {
-            callScript = "Hello, this is NexaCRM. We are calling to follow up on your enquiry.";
+            callScript = "Hello, this is Internite AI. We are calling to follow up on your enquiry.";
         }
 
         String leadId = extractLeadId(metadata);
@@ -1619,7 +1619,7 @@ public class CommunicationService {
 
     private String normalizeSubject(String subject) {
         String normalized = subject == null ? "" : subject.trim();
-        return normalized.isBlank() ? "NexaCRM message" : normalized;
+        return normalized.isBlank() ? "Internite AI message" : normalized;
     }
 
     private boolean isDuplicateInboundEvent(String channel, String externalId) {

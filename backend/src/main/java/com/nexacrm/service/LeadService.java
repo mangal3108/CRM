@@ -1026,7 +1026,7 @@ public class LeadService {
             String service = lead.getService() == null ? "" : lead.getService().trim();
             String serviceSnippet = service.isBlank() ? "" : " for " + service;
             callScript = "Hi " + (leadName.isBlank() ? "there" : leadName)
-                + ", this is NexaCRM calling regarding your enquiry"
+                + ", this is Internite AI calling regarding your enquiry"
                 + serviceSnippet
                 + ". Is this a good time to talk?";
         }

@@ -693,7 +693,7 @@ export default function CommunicationPage() {
         await commsAPI.sendChannel({
           channel,
           recipient,
-          subject: `NexaCRM follow-up: ${activeConv.name}`,
+          subject: `Internite follow-up: ${activeConv.name}`,
           body: text,
         })
         setHistory((prev) => ({
@@ -839,7 +839,7 @@ export default function CommunicationPage() {
       await commsAPI.sendChannel({
         channel,
         recipient,
-        subject: subject || `NexaCRM outbound: ${channel.toUpperCase()}`,
+        subject: subject || `Internite outbound: ${channel.toUpperCase()}`,
         body,
       })
 

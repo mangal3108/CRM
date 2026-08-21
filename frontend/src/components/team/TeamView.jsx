@@ -643,7 +643,7 @@ export default function TeamPage() {
                       value={memberForm.email}
                       onChange={(e) => setMemberForm((prev) => ({ ...prev, email: e.target.value }))}
                       className="input"
-                      placeholder="ramesh@nexacrm.com"
+                      placeholder="ramesh@internite.ai"
                     />
                   </div>
                   <div className="sm:col-span-2">

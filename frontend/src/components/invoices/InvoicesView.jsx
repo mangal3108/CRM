@@ -37,7 +37,7 @@ function escapePdfText(text) {
 
 function buildInvoicePdfBlob(inv) {
   const lines = [
-    'NexaCRM AI - Invoice',
+    'Internite AI - Invoice',
     `Invoice #: ${inv.id}`,
     `Customer: ${inv.customer}`,
     `Invoice Date: ${inv.date}`,
@@ -54,7 +54,7 @@ function buildInvoicePdfBlob(inv) {
     `Total: ${formatPdfCurrency(inv.total)}`,
     '',
     'Thank you for your business.',
-    'NexaCRM AI',
+    'Internite AI',
   ]
 
   const contentLines = [

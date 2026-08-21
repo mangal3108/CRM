@@ -30,7 +30,7 @@ public abstract class SeleniumBaseTest {
 
     @BeforeAll
     static void setupDriver() {
-        baseUrl      = env("NEXACRM_BASE_URL",      "https://nexacrmai.com");
+        baseUrl      = env("NEXACRM_BASE_URL",      "https://internite.online");
         testEmail    = env("NEXACRM_TEST_EMAIL",     "saurabhke4@gmail.com");
         testPassword = env("NEXACRM_TEST_PASSWORD",  "demo1234");
 

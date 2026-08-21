@@ -270,7 +270,7 @@ public class WorkflowEngine {
         if (lower.contains("send call")) {
             String leadPhone = normalize((String) context.get("leadPhone"));
             if (StringUtils.hasText(leadPhone)) {
-                return sendCallAction(leadPhone + "|Hello, this is NexaCRM calling about your enquiry.", context);
+                return sendCallAction(leadPhone + "|Hello, this is Internite AI calling about your enquiry.", context);
             }
         }
         if (lower.contains("reassign lead")) {
@@ -377,7 +377,7 @@ public class WorkflowEngine {
             return new ActionResult(false, "send_call skipped: recipient phone missing");
         }
         if (!StringUtils.hasText(script)) {
-            script = "Hello, this is NexaCRM calling about your enquiry.";
+            script = "Hello, this is Internite AI calling about your enquiry.";
         }
         communicationService.sendChannelMessage("call", recipient, "", script);
         return new ActionResult(true, "Call queued to " + recipient);

@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
       ['Name', 'Leads', 'SLA Met', 'SLA Breached'],
       ...teamLeaderboard.map((member) => [member.name, member.leads, member.deals, member.revenue]),
     ]
-    downloadCSV(rows, `nexacrm-analytics-${new Date().toISOString().slice(0, 10)}.csv`)
+    downloadCSV(rows, `internite-ai-analytics-${new Date().toISOString().slice(0, 10)}.csv`)
     toast.success('Live analytics report exported as CSV')
   }
 

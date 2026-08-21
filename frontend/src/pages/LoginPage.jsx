@@ -5,6 +5,7 @@ import { Eye, EyeOff, Lock, Mail, ArrowRight } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { authAPI } from '../services/api'
 import toast from 'react-hot-toast'
+import BrandLogo from '../components/brand/BrandLogo'
 
 /* ── Floating particles (Spline-inspired) ── */
 function LoginParticles() {
@@ -27,7 +28,7 @@ function LoginParticles() {
           style={{
             width: p.size, height: p.size,
             left: p.left, top: p.top,
-            background: p.id % 2 === 0 ? 'rgba(14,165,233,0.25)' : 'rgba(20,184,166,0.25)',
+            background: p.id % 2 === 0 ? 'rgba(106,86,236,0.25)' : 'rgba(20,184,166,0.25)',
             animationDelay: p.delay,
             animationDuration: p.duration,
           }}
@@ -114,7 +115,7 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative z-10 grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_54px_rgba(14,165,233,0.12)] md:max-h-[min(520px,90vh)] md:grid-cols-[1.05fr_0.95fr]"
+        className="relative z-10 grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_54px_rgba(106,86,236,0.12)] md:max-h-[min(520px,90vh)] md:grid-cols-[1.05fr_0.95fr]"
       >
         {/* Left — illustration top + glassmorphism card bottom */}
         <div className="relative hidden overflow-hidden bg-white md:flex md:h-full flex-col">
@@ -144,11 +145,11 @@ export default function LoginPage() {
             transition={{ delay: 0.9, duration: 0.6 }}
             className="relative z-20 mx-4 mb-4 shrink-0 rounded-2xl border border-brand-100/60 p-4"
             style={{ background: 'rgba(240,249,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-              boxShadow: '0 8px 32px rgba(14,165,233,0.08), inset 0 1px 0 rgba(255,255,255,0.8)' }}
+              boxShadow: '0 8px 32px rgba(106,86,236,0.08), inset 0 1px 0 rgba(255,255,255,0.8)' }}
           >
             <div className="flex items-center gap-2 mb-1.5">
-              <img src="/brand/nexacrm-ai-icon.png" alt="" className="h-5 w-5 object-contain" />
-              <span className="text-sm font-bold text-slate-800">NexaCRM AI</span>
+              <BrandLogo variant="icon" className="h-5 w-5" />
+              <span className="text-sm font-bold text-slate-800">Internite AI</span>
             </div>
             <p className="text-sm font-bold text-slate-800 leading-snug">
               Your sales, support &amp; success — all in one place
@@ -170,10 +171,10 @@ export default function LoginPage() {
             <Link
               to="/"
               className="mb-5 inline-flex w-fit items-center gap-2 text-sm font-bold text-slate-900 transition hover:text-brand-600"
-              aria-label="Go to NexaCRM AI home"
+              aria-label="Go to Internite AI home"
             >
-              <img src="/brand/nexacrm-ai-icon.png" alt="" className="h-8 w-8 object-contain" />
-              NexaCRM AI
+              <BrandLogo variant="icon" className="h-8 w-8" />
+              Internite AI
             </Link>
           </motion.div>
 
@@ -207,8 +208,8 @@ export default function LoginPage() {
                 <span className="mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Email</span>
                 <motion.span
                   animate={focusedField === 'email' ? {
-                    borderColor: 'rgba(14,165,233,0.5)',
-                    boxShadow: '0 0 0 4px rgba(14,165,233,0.08), 0 0 20px rgba(14,165,233,0.06)',
+                    borderColor: 'rgba(106,86,236,0.5)',
+                    boxShadow: '0 0 0 4px rgba(106,86,236,0.08), 0 0 20px rgba(106,86,236,0.06)',
                   } : {
                     borderColor: 'rgba(226,232,240,1)',
                     boxShadow: '0 0 0 0 transparent',
@@ -235,8 +236,8 @@ export default function LoginPage() {
                 <span className="mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Password</span>
                 <motion.span
                   animate={focusedField === 'password' ? {
-                    borderColor: 'rgba(14,165,233,0.5)',
-                    boxShadow: '0 0 0 4px rgba(14,165,233,0.08), 0 0 20px rgba(14,165,233,0.06)',
+                    borderColor: 'rgba(106,86,236,0.5)',
+                    boxShadow: '0 0 0 4px rgba(106,86,236,0.08), 0 0 20px rgba(106,86,236,0.06)',
                   } : {
                     borderColor: 'rgba(226,232,240,1)',
                     boxShadow: '0 0 0 0 transparent',
@@ -290,7 +291,7 @@ export default function LoginPage() {
               <MagneticSubmit
                 type="submit"
                 disabled={loading}
-                className="h-11 w-full rounded-xl bg-brand-500 text-sm font-bold text-white shadow-[0_14px_28px_rgba(14,165,233,0.22)] transition hover:-translate-y-0.5 hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 focus-visible:ring-offset-2 disabled:opacity-70 disabled:hover:translate-y-0"
+                className="h-11 w-full rounded-xl bg-brand-500 text-sm font-bold text-white shadow-[0_14px_28px_rgba(106,86,236,0.22)] transition hover:-translate-y-0.5 hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 focus-visible:ring-offset-2 disabled:opacity-70 disabled:hover:translate-y-0"
               >
                 <AnimatePresence mode="wait">
                   {loading ? (

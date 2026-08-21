@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import BrandLogo from '../components/brand/BrandLogo'
 import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight,
@@ -78,18 +79,18 @@ const bentoFeatures = [
 ]
 
 const testimonials = [
-  ['ApexPrime', 'NexaCRM AI allowed us to reduce duplicated effort and improve forecasting accuracy by 40%.', 'Thomas John', 'CEO', 5],
+  ['ApexPrime', 'Internite AI allowed us to reduce duplicated effort and improve forecasting accuracy by 40%.', 'Thomas John', 'CEO', 5],
   ['Global Eleva', 'Our teams got a single source of truth for every customer conversation across channels.', 'Sara Agrawal', 'VP Sales', 5],
   ['Minox', 'We implemented workflows faster and gave managers better visibility into the pipeline.', 'Oyin Robertson', 'CTO', 4],
   ['iNfoty', 'Automation helped us update high-priority accounts without manual effort or delays.', 'Ank Patel', 'Director', 5],
   ['TechVault', 'The AI engine surfaced opportunities we were missing — revenue grew 28% in Q1.', 'Maya Chen', 'Head of Growth', 5],
-  ['Orbion', 'We switched from 3 tools to just NexaCRM AI. Everything is finally in one place.', 'Ravi Kumar', 'COO', 4],
+  ['Orbion', 'We switched from 3 tools to just Internite AI. Everything is finally in one place.', 'Ravi Kumar', 'COO', 4],
 ]
 
 const faqs = [
-  ['How do I migrate to NexaCRM AI?', 'Our team helps import contacts, companies, deals, notes, and activities with guided onboarding — usually under 48 hours.'],
+  ['How do I migrate to Internite AI?', 'Our team helps import contacts, companies, deals, notes, and activities with guided onboarding — usually under 48 hours.'],
   ['Can teams customize pipelines?', 'Yes. You can create pipelines, fields, automations, and dashboards around your unique sales process.'],
-  ['Does NexaCRM AI include AI assistance?', 'Yes. AI agents can summarize records, recommend next actions, and surface high-value opportunities automatically.'],
+  ['Does Internite AI include AI assistance?', 'Yes. AI agents can summarize records, recommend next actions, and surface high-value opportunities automatically.'],
   ['What integrations are available?', 'We connect with email providers, WhatsApp, calendars, and popular tools through our API and native integrations.'],
   ['Is there a free trial?', 'Yes! Our Starter plan is free forever for up to 3 users. No credit card required.'],
 ]
@@ -205,7 +206,7 @@ function CursorGlow() {
         height: 400,
         x: -200,
         y: -200,
-        background: 'radial-gradient(circle, rgba(14,165,233,0.06) 0%, rgba(20,184,166,0.03) 40%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(106,86,236,0.06) 0%, rgba(20,184,166,0.03) 40%, transparent 70%)',
         borderRadius: '50%',
       }}
     />
@@ -524,7 +525,7 @@ function TestimonialWall({ items }) {
 }
 
 /* ── SpotlightCard ── */
-function SpotlightCard({ children, className = '', spotlightColor = 'rgba(14, 165, 233, 0.18)' }) {
+function SpotlightCard({ children, className = '', spotlightColor = 'rgba(106, 86, 236, 0.18)' }) {
   const cardRef = useRef(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [opacity, setOpacity] = useState(0)
@@ -560,7 +561,7 @@ function FloatingParticles({ count = 24 }) {
       {particles.map((p) => (
         <span key={p.id} className="absolute rounded-full landing-particle"
           style={{ width: p.size, height: p.size, left: p.left, top: p.top,
-            background: p.id % 3 === 0 ? 'rgba(14,165,233,0.5)' : p.id % 3 === 1 ? 'rgba(20,184,166,0.4)' : 'rgba(99,102,241,0.35)',
+            background: p.id % 3 === 0 ? 'rgba(106,86,236,0.5)' : p.id % 3 === 1 ? 'rgba(20,184,166,0.4)' : 'rgba(99,102,241,0.35)',
             opacity: p.opacity, animationDelay: p.delay, animationDuration: p.duration }} />
       ))}
     </div>
@@ -666,7 +667,7 @@ function Chatbot() {
               <div className="flex min-w-0 items-center gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/20 text-white backdrop-blur"><Bot size={21} /></span>
                 <div className="min-w-0">
-                  <h2 className="truncate text-sm font-bold text-white">NexaCRM AI Assistant</h2>
+                  <h2 className="truncate text-sm font-bold text-white">Internite AI Assistant</h2>
                   <p className="text-xs text-white/70">Powered by AI</p>
                 </div>
               </div>
@@ -702,7 +703,7 @@ function Chatbot() {
         )}
       </AnimatePresence>
       <motion.button type="button" onClick={() => setIsOpen((c) => !c)} whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}
-        className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-gradient-to-r from-brand-500 to-accent-500 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(14,165,233,0.28)] transition">
+        className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-gradient-to-r from-brand-500 to-accent-500 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(106,86,236,0.28)] transition">
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/15 transition group-hover:bg-white/25">
           <BotMessageSquare size={18} strokeWidth={2.1} /></span>
         <span className="hidden pr-1 sm:inline">AI Chat</span>
@@ -768,10 +769,10 @@ export default function LandingPage() {
           <div className="relative z-10">
             {/* Navbar */}
             <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}
-              className="sticky top-4 z-30 mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/70 px-3.5 py-2 shadow-[0_10px_28px_rgba(14,165,233,0.08)] backdrop-blur-2xl">
+              className="sticky top-4 z-30 mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/70 px-3.5 py-2 shadow-[0_10px_28px_rgba(106,86,236,0.08)] backdrop-blur-2xl">
               <Link to="/" className="group flex min-w-0 items-center gap-2 rounded-full pr-2">
-                <img src="/brand/nexacrm-ai-icon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
-                <span className="text-[15px] font-bold tracking-tight text-slate-900">NexaCRM AI</span>
+                <BrandLogo variant="icon" className="h-7 w-7 shrink-0" />
+                <span className="text-[15px] font-bold tracking-tight text-slate-900">Internite AI</span>
               </Link>
               <nav aria-label="Primary" className="hidden items-center gap-1 text-[12px] font-semibold text-slate-600 lg:flex">
                 {navItems.map((item) => (
@@ -843,7 +844,7 @@ export default function LandingPage() {
             {/* Hero dashboard with parallax */}
             <ScrollReveal className="relative mx-auto mt-4 max-w-4xl pb-10">
               <div className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-2xl shadow-brand-500/10 ring-4 ring-white/50">
-                <ParallaxImage src="/hero-dashboard.png" alt="NexaCRM AI dashboard overview" className="h-[200px] sm:h-[280px] lg:h-[360px]" />
+                <ParallaxImage src="/hero-dashboard.png" alt="Internite AI dashboard overview" className="h-[200px] sm:h-[280px] lg:h-[360px]" />
               </div>
               {/* Floating feature badges */}
               <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
@@ -940,7 +941,7 @@ export default function LandingPage() {
 
             <ScrollReveal delay={0.2} className="mx-auto mt-14 max-w-4xl">
               <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl shadow-brand-500/10 ring-1 ring-slate-100">
-                <ParallaxImage src="/hero-dashboard.png" alt="NexaCRM AI automation dashboard" className="h-[200px] sm:h-[280px] lg:h-[360px] rounded-xl" />
+                <ParallaxImage src="/hero-dashboard.png" alt="Internite AI automation dashboard" className="h-[200px] sm:h-[280px] lg:h-[360px] rounded-xl" />
               </div>
             </ScrollReveal>
           </section>
@@ -985,7 +986,7 @@ export default function LandingPage() {
               <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
                 <BlurText text="Loved by teams everywhere" />
               </h2>
-              <p className="mt-3 text-sm text-slate-500">See what our customers are saying about NexaCRM AI</p>
+              <p className="mt-3 text-sm text-slate-500">See what our customers are saying about Internite AI</p>
             </ScrollReveal>
             <div className="mt-12">
               <TestimonialWall items={testimonials} />
@@ -1028,7 +1029,7 @@ export default function LandingPage() {
           <section className="px-6 py-24 sm:px-10 lg:px-24">
             <div className="mx-auto grid max-w-5xl items-end gap-6 md:grid-cols-5">
               <ScrollReveal className="md:col-span-1">
-                <h2 className="text-3xl font-bold leading-tight text-slate-700">Grow<br />with <span className="reactbits-gradient-text">NexaCRM AI</span></h2>
+                <h2 className="text-3xl font-bold leading-tight text-slate-700">Grow<br />with <span className="reactbits-gradient-text">Internite AI</span></h2>
               </ScrollReveal>
               {stats.map(([value, suffix, label], i) => (
                 <ScrollReveal key={label} delay={i * 0.1}>
@@ -1169,7 +1170,7 @@ export default function LandingPage() {
                   </h2>
                   <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
                     className="mx-auto mt-4 max-w-md text-sm text-slate-500">
-                    Join 300K+ businesses already using NexaCRM AI to close more deals and grow faster.
+                    Join 300K+ businesses already using Internite AI to close more deals and grow faster.
                   </motion.p>
                   <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
                     className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -1182,7 +1183,7 @@ export default function LandingPage() {
                   </motion.div>
                   <ScrollReveal delay={0.2} className="mt-10">
                     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
-                      <ImageReveal src="/hero-dashboard.png" alt="NexaCRM AI product preview" className="h-auto w-full rounded-lg" />
+                      <ImageReveal src="/hero-dashboard.png" alt="Internite AI product preview" className="h-auto w-full rounded-lg" />
                     </div>
                   </ScrollReveal>
                 </div>
@@ -1217,7 +1218,7 @@ export default function LandingPage() {
 
           {/* ═══ FOOTER ═══ */}
           <footer className="relative overflow-hidden bg-slate-950 px-5 pb-20 pt-12 text-slate-300 sm:px-8 sm:pb-24 lg:px-10">
-            <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_20%,rgba(14,165,233,0.15),transparent_32%),radial-gradient(circle_at_74%_84%,rgba(20,184,166,0.12),transparent_30%)]" />
+            <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_20%,rgba(106,86,236,0.15),transparent_32%),radial-gradient(circle_at_74%_84%,rgba(20,184,166,0.12),transparent_30%)]" />
             <div className="relative mx-auto grid max-w-7xl gap-7 lg:grid-cols-[1.35fr_0.7fr_0.95fr] lg:gap-12">
               <div id="contact" className="max-w-xl">
                 <Link to="/" className="inline-flex items-center gap-2.5 text-white" aria-label="Kriscel Tech home">
@@ -1325,13 +1326,13 @@ export default function LandingPage() {
         .landing-3d-orb { position: relative; width: 200px; height: 200px; }
         .landing-3d-orb__inner {
           position: absolute; inset: 25px; border-radius: 50%;
-          background: radial-gradient(circle at 35% 35%, rgba(14,165,233,0.4), rgba(20,184,166,0.2) 50%, rgba(99,102,241,0.15) 80%, transparent);
-          box-shadow: inset 0 0 30px rgba(14,165,233,0.2), 0 0 60px rgba(14,165,233,0.15);
+          background: radial-gradient(circle at 35% 35%, rgba(106,86,236,0.4), rgba(20,184,166,0.2) 50%, rgba(99,102,241,0.15) 80%, transparent);
+          box-shadow: inset 0 0 30px rgba(106,86,236,0.2), 0 0 60px rgba(106,86,236,0.15);
           animation: landingOrbPulse 4s ease-in-out infinite;
         }
         .landing-3d-orb__ring {
           position: absolute; inset: 0; border-radius: 50%;
-          border: 1.5px solid rgba(14,165,233,0.2);
+          border: 1.5px solid rgba(106,86,236,0.2);
           animation: landingOrbSpin 12s linear infinite;
         }
         .landing-3d-orb__ring--2 { inset: 10px; border-color: rgba(20,184,166,0.15); animation-duration: 18s; animation-direction: reverse; }
@@ -1356,7 +1357,7 @@ export default function LandingPage() {
         }
         .landing-glitch:hover::before {
           animation: landingGlitch1 0.3s ease-in-out;
-          color: rgba(14,165,233,0.7);
+          color: rgba(106,86,236,0.7);
           opacity: 0.8;
         }
         .landing-glitch:hover::after {
@@ -1383,7 +1384,7 @@ export default function LandingPage() {
 
         /* Animated gradient border */
         .landing-gradient-border {
-          background: linear-gradient(135deg, #0ea5e9, #14b8a6, #8b5cf6, #0ea5e9);
+          background: linear-gradient(135deg, #6a56ec, #14b8a6, #8b5cf6, #6a56ec);
           background-size: 300% 300%;
           animation: landingGradientBorder 4s ease infinite;
         }
@@ -1396,7 +1397,7 @@ export default function LandingPage() {
         /* Typewriter cursor */
         .landing-typewriter-cursor {
           animation: landingBlink 1s step-end infinite;
-          color: #0ea5e9;
+          color: #6a56ec;
           font-weight: 300;
         }
         @keyframes landingBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }

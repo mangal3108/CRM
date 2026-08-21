@@ -73,7 +73,7 @@ const FUNNEL_STAGE_ORDER = [
 ]
 
 const KPI_CARDS = [
-  { key: 'totalLeads', title: 'Total Leads', icon: Users, color: 'from-brand-500 to-accent-500', glow: 'rgba(14,165,233,0.28)', rgb: '14, 165, 233' },
+  { key: 'totalLeads', title: 'Total Leads', icon: Users, color: 'from-brand-500 to-accent-500', glow: 'rgba(106,86,236,0.28)', rgb: '106, 86, 236' },
   { key: 'newLeads', title: 'New Leads', icon: Sparkles, color: 'from-cyan-500 to-brand-500', glow: 'rgba(6,182,212,0.3)', rgb: '6, 182, 212' },
   { key: 'assignedLeads', title: 'Assigned', icon: Repeat2, color: 'from-violet-500 to-indigo-600', glow: 'rgba(124,58,237,0.28)', rgb: '124, 58, 237' },
   { key: 'contactedLeads', title: 'Contacted', icon: Activity, color: 'from-sky-500 to-blue-600', glow: 'rgba(59,130,246,0.28)', rgb: '59, 130, 246' },
@@ -205,7 +205,7 @@ function SectionShell({
   subtitle,
   action,
   color = 'from-brand-500 to-accent-500',
-  glow = 'rgba(14,165,233,0.28)',
+  glow = 'rgba(106,86,236,0.28)',
 }) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3">
@@ -871,12 +871,12 @@ export default function LeadConversionDashboard() {
           </div>
 
           {/* ── #4: Activity Timeline — compact grid ── */}
-          <div className="dashboard-color-card glass-card p-3 sm:p-4" style={tintStyle('14, 165, 233')}>
+          <div className="dashboard-color-card glass-card p-3 sm:p-4" style={tintStyle('106, 86, 236')}>
             <SectionShell
               title="Lead Activity Timeline"
               icon={CalendarDays}
               color="from-sky-500 to-cyan-600"
-              glow="rgba(14,165,233,0.3)"
+              glow="rgba(106,86,236,0.3)"
               subtitle="Latest lifecycle events."
               action={activities.length > ACTIVITY_PAGE_SIZE ? (
                 <div className="flex items-center gap-1.5 text-[11px]">

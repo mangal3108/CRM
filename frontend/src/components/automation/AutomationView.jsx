@@ -159,7 +159,7 @@ const RULE_EXAMPLES = [
   { label: 'Assign Lead', type: 'THEN', text: 'assign_lead:user@email.com' },
   { label: 'Broadcast Notify', type: 'THEN', text: 'notify:Lead requires immediate follow-up' },
   { label: 'Send Email', type: 'THEN', text: 'send_email:ops@example.com|Workflow Alert|Lead entered high-priority stage' },
-  { label: 'Send Call', type: 'THEN', text: 'send_call:+919876543210|Hi, this is NexaCRM calling about your enquiry.' },
+  { label: 'Send Call', type: 'THEN', text: 'send_call:+919876543210|Hi, this is Internite calling about your enquiry.' },
   { label: 'Send WhatsApp', type: 'THEN', text: 'send_whatsapp:+919876543210|Hi {{name}}, thank you for your interest!' },
 ]
 

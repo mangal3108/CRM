@@ -1,7 +1,7 @@
 export default function DashboardIcon({
   icon: Icon,
   color = 'from-brand-500 to-accent-500',
-  glow = 'rgba(14,165,233,0.28)',
+  glow = 'rgba(106,86,236,0.28)',
   className = '',
   iconClassName = 'h-4 w-4',
 }) {

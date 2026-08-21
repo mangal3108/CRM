@@ -37,7 +37,7 @@ JWT_SECRET=CHANGE_ME_TO_A_RANDOM_64_CHARACTER_SECRET_STRING_FOR_PRODUCTION_USE
 PORT=8080
 
 # CORS - Update with your actual frontend URL
-CORS_ORIGINS=https://nexacrmai.com,https://www.nexacrmai.com
+CORS_ORIGINS=https://internite.online,https://www.internite.online
 
 # Cookie settings for HTTP (change to true when you add SSL)
 AUTH_COOKIE_SECURE=true

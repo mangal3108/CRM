@@ -68,10 +68,10 @@ export default function SpeedDial({ actions = [], icon, position = 'bottom-right
         transition={{ duration: 0.2 }}
         className="nexa-speed-dial__main w-14 h-14 rounded-full flex items-center justify-center shadow-xl text-white transition-all hover:shadow-2xl active:scale-95"
         style={{
-          background: 'linear-gradient(135deg, #0ea5e9, #14b8a6)',
+          background: 'linear-gradient(135deg, #6a56ec, #14b8a6)',
           boxShadow: open
-            ? '0 8px 30px rgba(14,165,233,0.4), 0 4px 12px rgba(0,0,0,0.1)'
-            : '0 6px 20px rgba(14,165,233,0.3), 0 3px 8px rgba(0,0,0,0.08)',
+            ? '0 8px 30px rgba(106,86,236,0.4), 0 4px 12px rgba(0,0,0,0.1)'
+            : '0 6px 20px rgba(106,86,236,0.3), 0 3px 8px rgba(0,0,0,0.08)',
         }}
         aria-label={open ? 'Close actions' : 'Quick actions'}
         aria-expanded={open}

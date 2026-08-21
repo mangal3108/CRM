@@ -82,15 +82,15 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
     return (
       <div className="flex flex-col h-full">
         {!isMobile && (
-          <div className={`flex h-16 flex-shrink-0 items-center border-b border-white/10 px-2.5 ${showLabel ? 'justify-between gap-2' : 'justify-center'}`}>
+          <div className={`flex h-16 flex-shrink-0 items-center border-b border-slate-200 dark:border-white/10 px-2.5 ${showLabel ? 'justify-between gap-2' : 'justify-center'}`}>
             {showLabel ? (
-              <BrandLogo variant="wordmark" size="sm" tone="dark" className="flex-1" imageClassName="h-9" />
+              <BrandLogo variant="wordmark" size="sm" tone="light" className="flex-1" imageClassName="h-9" />
             ) : (
               <button
                 type="button"
                 onClick={() => setCollapsed(false)}
                 aria-label="Expand sidebar"
-                className="inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-slate-950/40 ring-1 ring-white/10 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                className="inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-950/40 ring-1 ring-slate-200 dark:ring-white/10 transition-colors hover:bg-slate-200 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
               >
                 <BrandLogo variant="icon" size="md" className="h-full w-full p-1.5" />
               </button>
@@ -100,7 +100,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
                 type="button"
                 onClick={() => setCollapsed(true)}
                 aria-label="Collapse sidebar"
-                className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl text-slate-300 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl text-slate-400 dark:text-slate-300 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -114,7 +114,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
             <>
               {showLabel && (
                 <div className="px-3 pt-2 pb-1">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Platform Admin</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-400">Platform Admin</span>
                 </div>
               )}
               {PLATFORM_ADMIN_TABS.map(({ label, icon: Icon, tabKey }) => {
@@ -134,7 +134,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
                   </Link>
                 )
               })}
-              <div className="my-1.5 border-t border-white/10" />
+              <div className="my-1.5 border-t border-slate-200 dark:border-white/10" />
             </>
           )}
           {visibleNavItems.map(({ label, icon: Icon, path }) => {
@@ -176,10 +176,10 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
         </nav>
 
         {/* User */}
-        <div className="p-2.5 border-t border-white/10">
+        <div className="p-2.5 border-t border-slate-200 dark:border-white/10">
           <div className={`flex items-center ${showLabel ? 'gap-3 px-2' : 'justify-center'}`}>
             <div className="relative flex-shrink-0">
-              <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${avatarStyle} flex items-center justify-center text-white text-xs font-bold overflow-hidden ring-2 ring-white/20`}>
+              <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${avatarStyle} flex items-center justify-center text-white text-xs font-bold overflow-hidden ring-2 ring-white dark:ring-white/20`}>
                 {user?.avatarUrl && !avatarBroken ? (
                   <img
                     src={user.avatarUrl}
@@ -191,13 +191,13 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
                   user?.name?.charAt(0) ?? 'U'
                 )}
               </div>
-              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-900 shadow-sm" />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900 shadow-sm" />
             </div>
             {showLabel && (
               <div className="overflow-hidden">
-                <p className="text-xs font-semibold text-white truncate leading-tight">{user?.name}</p>
+                <p className="text-xs font-semibold text-slate-800 dark:text-white truncate leading-tight">{user?.name}</p>
                 {user?.tenantName && (
-                  <p className="text-[10px] text-brand-300 truncate leading-tight">{user.tenantName}</p>
+                  <p className="text-[10px] text-brand-600 dark:text-brand-300 truncate leading-tight">{user.tenantName}</p>
                 )}
                 <p className="text-[10px] text-slate-400 truncate">{user?.role}</p>
               </div>
@@ -226,13 +226,13 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
           />
           <aside className="fixed left-0 top-0 bottom-0 w-60 edu-sidebar z-50 md:hidden">
-            <div className="flex h-16 items-center border-b border-white/10 px-3 pr-12">
-              <BrandLogo variant="wordmark" size="md" tone="dark" className="w-full" />
+            <div className="flex h-16 items-center border-b border-slate-200 dark:border-white/10 px-3 pr-12">
+              <BrandLogo variant="wordmark" size="md" tone="light" className="w-full" />
             </div>
             <button
               onClick={() => setMobileOpen(false)}
               aria-label="Close navigation"
-              className="absolute top-3 right-3 p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+              className="absolute top-3 right-3 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
             >
               <X className="w-5 h-5 text-slate-400" />
             </button>

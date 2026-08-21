@@ -684,7 +684,7 @@ public class AIService {
             %s
 
             Best regards,
-            NexaCRM Team
+            Internite AI Team
             """.formatted(
                 leadName.isBlank() ? "there" : leadName,
                 company.isBlank() ? "your business" : company,

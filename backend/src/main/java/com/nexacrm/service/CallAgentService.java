@@ -307,7 +307,7 @@ public class CallAgentService {
         String leadName = lead != null ? trim(lead.getName()) : "";
         String script = trim(record.getBody());
         if (script.isBlank()) {
-            script = "Hello, this is NexaCRM. We are calling to follow up on your enquiry.";
+            script = "Hello, this is Internite AI. We are calling to follow up on your enquiry.";
         }
 
         Map<String, Object> metadata = new LinkedHashMap<>();
