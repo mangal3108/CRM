@@ -17,6 +17,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,11 +26,17 @@ class AIServiceTest {
     @Mock
     private LeadRepository leadRepository;
 
+    @Mock
+    private IntegrationService integrationService;
+
     private AIService aiService;
 
     @BeforeEach
     void setUp() {
-        aiService = new AIService(leadRepository, new RestTemplate(), new ObjectMapper());
+        // No tenant-saved Mistral key in these tests — exercises the same
+        // "model unavailable" fallback path as no MISTRAL_API_KEY env var.
+        lenient().when(integrationService.getConfig("mistral_ai")).thenReturn(Map.of());
+        aiService = new AIService(leadRepository, new RestTemplate(), new ObjectMapper(), integrationService);
     }
 
     @Test

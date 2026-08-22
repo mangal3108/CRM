@@ -23,6 +23,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,7 +80,7 @@ class WorkflowEngineTest {
 
         assertTrue(elapsed >= 8, "Expected WAIT step to delay execution");
         verify(workflowRepository).save(any(Workflow.class));
-        verify(notificationPublisher).broadcast(any(Map.class));
+        verify(notificationPublisher).broadcastToTenant(eq(1L), any(Map.class));
 
         ArgumentCaptor<WorkflowRunLog> logCaptor = ArgumentCaptor.forClass(WorkflowRunLog.class);
         verify(workflowRunLogRepository).save(logCaptor.capture());
