@@ -2065,7 +2065,9 @@ public class LeadService {
             .include("reminder_60_sent_at")
             .include("escalated_at")
             .include("reassigned_at")
-            .include("revenue_value");
+            .include("revenue_value")
+            .include("notes")
+            .include("activity_logs");
     }
 
     private LeadDTO toListDTO(org.bson.Document d, Map<String, String> assignedNameById) {
@@ -2095,6 +2097,7 @@ public class LeadService {
             .tags(d.getString("tags") != null && !d.getString("tags").isBlank()
                 ? Arrays.asList(d.getString("tags").split(",")) : null)
             .notes(d.getString("notes"))
+            .activityLogs(d.getList("activity_logs", String.class))
             .facebookLeadId(d.getString("facebook_lead_id"))
             .facebookFormId(d.getString("facebook_form_id"))
             .facebookAdId(d.getString("facebook_ad_id"))

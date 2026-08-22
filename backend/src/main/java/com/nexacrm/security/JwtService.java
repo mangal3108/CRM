@@ -2,6 +2,7 @@ package com.nexacrm.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,8 @@ import java.util.function.Function;
 @Slf4j
 public class JwtService {
 
+    private static final String DEFAULT_PLACEHOLDER_SECRET = "replace-with-a-64-char-minimum-secret-before-production";
+
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -25,6 +28,23 @@ public class JwtService {
 
     @Value("${jwt.refresh-expiration}")
     private long refreshExpiration;
+
+    @PostConstruct
+    void warnIfUsingDefaultSecret() {
+        // Not a hard startup failure on purpose — this must never take down a
+        // deployment that's already running fine — but this string is public
+        // (checked into the repo as the fallback default), so if JWT_SECRET
+        // isn't actually set in the environment, anyone can forge a valid
+        // token for any tenant/role, including PLATFORM_ADMIN.
+        if (DEFAULT_PLACEHOLDER_SECRET.equals(secretKey)) {
+            log.error(
+                "SECURITY WARNING: JWT_SECRET environment variable is not set — the app is signing tokens "
+                    + "with the public default placeholder value from application.properties. Anyone who has "
+                    + "seen this repository can forge valid login tokens for ANY user, including platform admins. "
+                    + "Set a real JWT_SECRET (openssl rand -base64 64) in the environment immediately."
+            );
+        }
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

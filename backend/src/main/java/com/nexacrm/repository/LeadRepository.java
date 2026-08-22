@@ -21,8 +21,6 @@ public interface LeadRepository extends MongoRepository<Lead, String> {
 
     List<Lead> findByIdInAndTenantIdAndDeletedFalse(Collection<String> ids, Long tenantId);
 
-    List<Lead> findByAssignedTo_IdAndDeletedFalse(String userId);
-
     List<Lead> findByTenantIdAndDeletedFalse(Long tenantId);
 
     List<Lead> findByTenantIdAndDeletedFalseAndStatus(Long tenantId, Lead.LeadStatus status);

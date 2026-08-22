@@ -36,6 +36,22 @@ public class IntegrationController {
         return ResponseEntity.ok(integrationService.getById(id));
     }
 
+    @GetMapping("/whatsapp/meta/config")
+    @PreAuthorize("hasAuthority('integrations.read')")
+    @Operation(summary = "Get public (non-secret) config for launching WhatsApp Embedded Signup")
+    public ResponseEntity<Map<String, String>> metaWhatsAppPublicConfig() {
+        return ResponseEntity.ok(integrationService.getMetaWhatsAppPublicConfig());
+    }
+
+    @PostMapping("/whatsapp/meta/exchange")
+    @PreAuthorize("hasAuthority('integrations.update')")
+    @Operation(summary = "Exchange a WhatsApp Embedded Signup code for a connected integration")
+    public ResponseEntity<IntegrationConfigResponse> exchangeMetaWhatsAppSignup(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(integrationService.exchangeMetaWhatsAppSignup(
+            body.get("code"), body.get("wabaId"), body.get("phoneNumberId")
+        ));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('integrations.update')")
     @Operation(summary = "Save integration credentials")

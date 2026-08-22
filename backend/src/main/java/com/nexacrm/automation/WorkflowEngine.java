@@ -412,7 +412,7 @@ public class WorkflowEngine {
 
     private ActionResult notifyAction(String message, String workflowName, String trigger) {
         String finalMsg = StringUtils.hasText(message) ? message : ("Workflow executed: " + workflowName);
-        notificationPublisher.broadcast(Map.of(
+        notificationPublisher.broadcastToTenant(tenantId(), Map.of(
             "type", "WORKFLOW",
             "title", workflowName,
             "message", finalMsg,

@@ -244,6 +244,10 @@ public class DealService {
             .orElseThrow(() -> new ResourceNotFoundException("Deal not found: " + id));
         ensureDealVisible(deal);
 
+        if (stageName == null || stageName.isBlank()) {
+            throw new IllegalArgumentException("Stage is required. Valid values: " +
+                java.util.Arrays.toString(Deal.DealStage.values()));
+        }
         Deal.DealStage newStage;
         try {
             newStage = Deal.DealStage.valueOf(stageName.toUpperCase());

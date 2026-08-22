@@ -435,7 +435,14 @@ public class LeadConversionDashboardService {
     }
 
     private List<LeadActivity> fetchActivities(TimeRange range, List<Lead> leads) {
-        return List.of();
+        List<String> leadIds = leads.stream()
+            .map(Lead::getId)
+            .filter(StringUtils::hasText)
+            .toList();
+        if (leadIds.isEmpty()) {
+            return List.of();
+        }
+        return leadActivityRepository.findByLeadIdInAndTenantIdAndDeletedFalseOrderBySavedAtDesc(leadIds, tenantId());
     }
 
     private List<User> visibleUsers(ResolvedScope scope) {

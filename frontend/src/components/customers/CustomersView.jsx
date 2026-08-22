@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import toast from 'react-hot-toast'
-import { leadsAPI, customersAPI } from '../../services/api'
+import { leadsAPI } from '../../services/api'
 import PageHeading from '../ui/PageHeading'
 import LoadingState from '../ui/LoadingState'
 import { fetchAllPages } from '../../utils/pagination'
@@ -731,18 +731,23 @@ export default function CustomersPage() {
 
   const createCustomer = async (data) => {
     try {
+      // This page (and its list/stats) is a view over Leads, not the separate
+      // Customer collection — a record only shows up here if it's a Lead.
+      // Create it as a lead so it actually appears instead of silently
+      // landing in a collection this page never reads from.
       const payload = {
-        name: data.name,
-        company: data.name,
-        primaryContact: data.contact,
+        name: data.contact,
         email: data.email,
         phone: data.phone,
-        industry: data.industry,
-        healthScore: data.status === 'at-risk' ? 40 : 75,
-        status: data.status === 'at-risk' ? 'AT_RISK' : 'ACTIVE',
+        company: data.name,
+        source: 'OTHER',
+        score: 'WARM',
+        status: data.status === 'at-risk' ? 'NEGOTIATION' : 'WON',
+        dealValue: Number(data.revenue) || 0,
+        tags: [data.industry].filter(Boolean),
       }
-      await customersAPI.create(payload)
-      // Reload leads to pick up any changes
+      await leadsAPI.create(payload)
+      // Reload leads to pick up the new record
       const result = await fetchAllPages((params) => leadsAPI.getAll(params), 200)
       const rows = (result.rows || []).map(mapLeadToCustomer)
       rows.sort((a, b) => {

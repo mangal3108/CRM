@@ -89,7 +89,15 @@ export const useNotificationStore = create((set, get) => ({
     try {
       const page = await notificationsAPI.getAll()
       const notifications = (page?.content ?? []).map(toUiNotification)
-      const unreadCount = notifications.filter((n) => !n.read).length
+      // Use the backend's real tenant/user-scoped count, not just this page's
+      // unread rows — there can be more unread notifications than fit on page 1.
+      let unreadCount = notifications.filter((n) => !n.read).length
+      try {
+        const { count } = await notificationsAPI.getUnreadCount()
+        if (typeof count === 'number') unreadCount = count
+      } catch {
+        // Keep the page-derived count if the dedicated endpoint is unavailable.
+      }
       set({ notifications, unreadCount, loading: false })
       return notifications
     } catch (err) {

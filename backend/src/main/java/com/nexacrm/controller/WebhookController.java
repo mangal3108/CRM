@@ -55,7 +55,8 @@ public class WebhookController {
             "facebookMessengerAliasPath", "/api/webhooks/facebook/messenger",
             "instagramMessagesPath", "/api/webhooks/instagram/messages",
             "facebookLegacyPath", "/api/webhooks/meta",
-            "whatsappPath", "/api/webhooks/whatsapp"
+            "whatsappPath", "/api/webhooks/whatsapp",
+            "whatsappMetaPath", "/api/webhooks/whatsapp/meta"
         ));
     }
 
@@ -89,7 +90,7 @@ public class WebhookController {
 
     // ── Facebook Lead Ads ─────────────────────────────────────────
 
-    @GetMapping({"/facebook/leads", "/facebook/messages", "/facebook/messenger", "/instagram/messages", "/meta"})
+    @GetMapping({"/facebook/leads", "/facebook/messages", "/facebook/messenger", "/instagram/messages", "/meta", "/whatsapp/meta"})
     @Operation(summary = "Facebook/Meta webhook verification (Lead Ads + Messenger)")
     public ResponseEntity<String> verifyFacebookWebhook(@RequestParam Map<String, String> query) {
         String mode = firstNonBlank(query, "hub.mode", "hub_mode", "mode");
@@ -149,6 +150,19 @@ public class WebhookController {
             return ResponseEntity.status(403).build();
         }
         communicationService.processInstagramMessengerWebhookAsync(rawBody);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/whatsapp/meta")
+    @Operation(summary = "Receive official Meta WhatsApp Cloud API webhook events (Embedded Signup)")
+    public ResponseEntity<Void> receiveMetaWhatsAppWebhook(
+            @RequestHeader(value = "X-Hub-Signature-256", required = false) String signature,
+            @RequestBody String rawBody) {
+        if (!isValidFacebookSignature(rawBody, signature)) {
+            log.warn("Meta WhatsApp webhook rejected: invalid signature");
+            return ResponseEntity.status(403).build();
+        }
+        communicationService.processMetaWhatsAppWebhookAsync(rawBody);
         return ResponseEntity.ok().build();
     }
 

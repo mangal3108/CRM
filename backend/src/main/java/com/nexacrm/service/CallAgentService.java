@@ -91,9 +91,16 @@ public class CallAgentService {
             bearer = trim(bearer.substring("bearer ".length()));
         }
 
-        return expectedSecret.equals(trim(secretHeader))
-            || expectedSecret.equals(payloadSecret)
-            || expectedSecret.equals(bearer);
+        return constantTimeEquals(expectedSecret, trim(secretHeader))
+            || constantTimeEquals(expectedSecret, payloadSecret)
+            || constantTimeEquals(expectedSecret, bearer);
+    }
+
+    private boolean constantTimeEquals(String expected, String actual) {
+        return java.security.MessageDigest.isEqual(
+            expected.getBytes(java.nio.charset.StandardCharsets.UTF_8),
+            actual.getBytes(java.nio.charset.StandardCharsets.UTF_8)
+        );
     }
 
     public Map<String, Object> processWebhook(Map<String, Object> payload) {
@@ -975,7 +982,7 @@ public class CallAgentService {
         }
         if (created || dirty) {
             try {
-                notificationPublisher.broadcast(Map.of(
+                notificationPublisher.broadcastToTenant(tenantId(), Map.of(
                     "type", "DEAL",
                     "title", "Pipeline Updated",
                     "message", (lead.getName() != null ? lead.getName() : "Lead") + " moved to " + targetStage.name(),

@@ -6,6 +6,8 @@ import com.nexacrm.repository.IntegrationConfigRepository;
 import com.nexacrm.security.CryptoService;
 import com.nexacrm.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,6 +28,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IntegrationService {
 
     private static final Map<String, List<String>> REQUIRED_FIELDS = Map.of(
@@ -54,6 +57,18 @@ public class IntegrationService {
     private final IntegrationConfigRepository integrationConfigRepository;
     private final CryptoService cryptoService;
     private final RestTemplate restTemplate;
+
+    @Value("${meta.app-id}")
+    private String metaAppId;
+
+    @Value("${meta.app-secret}")
+    private String metaAppSecret;
+
+    @Value("${meta.whatsapp.config-id:}")
+    private String metaWhatsAppConfigId;
+
+    @Value("${meta.graph-api-version:v19.0}")
+    private String metaGraphApiVersion;
 
     private Long tenantId() {
         return TenantContext.currentTenantId();
@@ -85,6 +100,13 @@ public class IntegrationService {
         Map<String, String> mergedValues = mergeValues(existingValues, values);
         validateRequired(mergedValues, required);
 
+        // Facebook/Instagram credentials are verified against the Graph API before
+        // being marked connected — pasting an arbitrary non-blank token no longer
+        // "connects" a channel that was never actually checked.
+        if ("facebook".equals(normalizedId) || "instagram".equals(normalizedId)) {
+            verifyMetaChannelCredentials(normalizedId, mergedValues);
+        }
+
         IntegrationConfig config = existing != null ? existing : new IntegrationConfig();
         config.setIntegrationId(normalizedId);
         config.setTenantId(tenantId());
@@ -111,6 +133,9 @@ public class IntegrationService {
         if ("whatsapp".equals(normalizedId)) {
             return testWhatsAppConnection(testValues);
         }
+        if ("facebook".equals(normalizedId) || "instagram".equals(normalizedId)) {
+            return verifyMetaChannelCredentials(normalizedId, testValues);
+        }
 
         return Map.of(
             "ok", true,
@@ -128,6 +153,162 @@ public class IntegrationService {
         Map<String, String> merged = mergeValues(getConfig(normalizedId), values);
         validateRequired(merged, getRequiredFields(normalizedId));
         return leadService().syncFromPublicGoogleSheet(merged);
+    }
+
+    /** Public (non-secret) config the frontend needs to launch WhatsApp Embedded Signup via the Facebook JS SDK. */
+    public Map<String, String> getMetaWhatsAppPublicConfig() {
+        return Map.of(
+            "appId", trim(metaAppId),
+            "configId", trim(metaWhatsAppConfigId),
+            "graphApiVersion", trim(metaGraphApiVersion)
+        );
+    }
+
+    /**
+     * Exchanges the code returned by WhatsApp Embedded Signup for a long-lived
+     * access token, subscribes this app to the customer's WABA webhooks, and
+     * stores it all as this tenant's "whatsapp" integration — same tenant-scoped
+     * IntegrationConfig row every other channel uses, so each company's own
+     * WhatsApp Business Account stays isolated from every other tenant's.
+     */
+    public IntegrationConfigResponse exchangeMetaWhatsAppSignup(String code, String wabaId, String phoneNumberId) {
+        String cleanCode = trim(code);
+        String cleanWabaId = trim(wabaId);
+        String cleanPhoneNumberId = trim(phoneNumberId);
+        if (cleanCode.isBlank()) {
+            throw new IllegalStateException("Missing WhatsApp Embedded Signup authorization code.");
+        }
+        if (cleanWabaId.isBlank() || cleanPhoneNumberId.isBlank()) {
+            throw new IllegalStateException("Missing WhatsApp Business Account ID or phone number ID from signup.");
+        }
+
+        String accessToken = exchangeMetaCodeForToken(cleanCode);
+        String longLivedToken = exchangeForLongLivedToken(accessToken);
+        subscribeWabaWebhooks(cleanWabaId, longLivedToken);
+        Map<String, Object> phoneDetails = fetchMetaPhoneNumberDetails(cleanPhoneNumberId, longLivedToken);
+
+        Map<String, String> values = new LinkedHashMap<>();
+        values.put("provider", "meta");
+        values.put("wabaId", cleanWabaId);
+        values.put("phoneNumberId", cleanPhoneNumberId);
+        values.put("metaAccessToken", longLivedToken);
+        values.put("displayPhoneNumber", String.valueOf(phoneDetails.getOrDefault("display_phone_number", "")));
+        values.put("verifiedName", String.valueOf(phoneDetails.getOrDefault("verified_name", "")));
+
+        return save("whatsapp", values);
+    }
+
+    /** Looks up which tenant owns a WhatsApp phone number ID — used to route inbound Meta webhooks (no auth session). */
+    public Long resolveTenantIdByWhatsAppPhoneNumberId(String phoneNumberId) {
+        String cleanPhoneNumberId = trim(phoneNumberId);
+        if (cleanPhoneNumberId.isBlank()) {
+            return null;
+        }
+        return integrationConfigRepository.findByWhatsAppPhoneNumberIdAndDeletedFalse(cleanPhoneNumberId)
+            .map(IntegrationConfig::getTenantId)
+            .orElse(null);
+    }
+
+    private String exchangeMetaCodeForToken(String code) {
+        String url = UriComponentsBuilder.fromHttpUrl("https://graph.facebook.com/" + metaGraphApiVersion + "/oauth/access_token")
+            .queryParam("client_id", metaAppId)
+            .queryParam("client_secret", metaAppSecret)
+            .queryParam("code", code)
+            .toUriString();
+        try {
+            Map<?, ?> response = restTemplate.getForObject(url, Map.class);
+            Object token = response == null ? null : response.get("access_token");
+            if (token == null) {
+                throw new IllegalStateException("Meta did not return an access token for this signup code.");
+            }
+            return String.valueOf(token);
+        } catch (HttpStatusCodeException ex) {
+            log.error("Meta WhatsApp code exchange failed: {}", ex.getResponseBodyAsString());
+            throw new IllegalStateException("WhatsApp signup failed while exchanging the authorization code with Meta.");
+        }
+    }
+
+    private String exchangeForLongLivedToken(String shortLivedToken) {
+        String url = UriComponentsBuilder.fromHttpUrl("https://graph.facebook.com/" + metaGraphApiVersion + "/oauth/access_token")
+            .queryParam("grant_type", "fb_exchange_token")
+            .queryParam("client_id", metaAppId)
+            .queryParam("client_secret", metaAppSecret)
+            .queryParam("fb_exchange_token", shortLivedToken)
+            .toUriString();
+        try {
+            Map<?, ?> response = restTemplate.getForObject(url, Map.class);
+            Object token = response == null ? null : response.get("access_token");
+            return token == null ? shortLivedToken : String.valueOf(token);
+        } catch (HttpStatusCodeException ex) {
+            log.warn("Meta long-lived token exchange failed, keeping short-lived token: {}", ex.getResponseBodyAsString());
+            return shortLivedToken;
+        }
+    }
+
+    private void subscribeWabaWebhooks(String wabaId, String accessToken) {
+        String url = "https://graph.facebook.com/" + metaGraphApiVersion + "/" + wabaId + "/subscribed_apps";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        try {
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(headers), Map.class);
+        } catch (HttpStatusCodeException ex) {
+            log.warn("Failed to subscribe WABA {} to app webhooks: {}", wabaId, ex.getResponseBodyAsString());
+        }
+    }
+
+    /**
+     * Verifies a Facebook Page or Instagram Business Account ID + access token actually
+     * work by calling the Graph API directly, instead of trusting whatever was typed in.
+     */
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> verifyMetaChannelCredentials(String normalizedId, Map<String, String> values) {
+        String accessToken = trim(values.get("accessToken"));
+        String subjectId = "facebook".equals(normalizedId) ? trim(values.get("pageId")) : trim(values.get("igAccountId"));
+        String fields = "facebook".equals(normalizedId) ? "id,name" : "id,username";
+
+        String url = UriComponentsBuilder.fromHttpUrl("https://graph.facebook.com/" + metaGraphApiVersion + "/" + subjectId)
+            .queryParam("fields", fields)
+            .toUriString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), Map.class);
+            Map<String, Object> body = response.getBody() == null ? Map.of() : (Map<String, Object>) response.getBody();
+            if (body.get("id") == null) {
+                throw new IllegalStateException("Meta did not return a valid " + normalizedId + " account for these credentials.");
+            }
+            String label = "facebook".equals(normalizedId)
+                ? String.valueOf(body.getOrDefault("name", subjectId))
+                : String.valueOf(body.getOrDefault("username", subjectId));
+            return Map.of(
+                "ok", true,
+                "message", "Verified " + normalizedId + " account: " + label,
+                "integration", normalizedId
+            );
+        } catch (HttpStatusCodeException ex) {
+            log.warn("Meta {} credential verification failed: {}", normalizedId, ex.getResponseBodyAsString());
+            throw new IllegalStateException(
+                "Could not verify this " + normalizedId + " account with Meta. Check the ID and access token: "
+                    + ex.getResponseBodyAsString()
+            );
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> fetchMetaPhoneNumberDetails(String phoneNumberId, String accessToken) {
+        String url = UriComponentsBuilder.fromHttpUrl("https://graph.facebook.com/" + metaGraphApiVersion + "/" + phoneNumberId)
+            .queryParam("fields", "display_phone_number,verified_name")
+            .toUriString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), Map.class);
+            return response.getBody() == null ? Map.of() : (Map<String, Object>) response.getBody();
+        } catch (HttpStatusCodeException ex) {
+            log.warn("Failed to fetch WhatsApp phone number details: {}", ex.getResponseBodyAsString());
+            return Map.of();
+        }
     }
 
     public void disconnect(String integrationId) {

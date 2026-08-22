@@ -82,11 +82,17 @@ export function connectWebSocket(onNotification) {
         } catch { /* ignore malformed */ }
       })
 
-      stompClient.subscribe('/topic/notifications', (msg) => {
-        try {
-          onNotification(JSON.parse(msg.body))
-        } catch { /* ignore malformed */ }
-      })
+      // Tenant-scoped broadcasts (workflow/pipeline events) — NEVER subscribe to
+      // a bare "/topic/notifications" here, that destination has no tenant
+      // segmentation server-side and would receive every other company's events.
+      const tenantId = useAuthStore.getState().user?.tenantId
+      if (tenantId) {
+        stompClient.subscribe(`/topic/notifications/tenant/${tenantId}`, (msg) => {
+          try {
+            onNotification(JSON.parse(msg.body))
+          } catch { /* ignore malformed */ }
+        })
+      }
     },
 
     onStompError: (frame) => {

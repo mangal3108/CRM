@@ -284,6 +284,8 @@ export const integrationsAPI = {
   test:        (id, values) => api.post(`/integrations/${id}/test`, { values }, { timeout: 30000 }),
   sync:        (id, values) => api.post(`/integrations/${id}/sync`, { values }, { timeout: 45000 }),
   disconnect:  (id)         => api.delete(`/integrations/${id}`),
+  getMetaWhatsAppConfig:  ()      => api.get('/integrations/whatsapp/meta/config'),
+  exchangeMetaWhatsApp:   (body)  => api.post('/integrations/whatsapp/meta/exchange', body, { timeout: 30000 }),
 }
 
 // ──────────────────────────────────────────
@@ -424,10 +426,11 @@ export const teamAPI = {
 //  Notifications
 // ──────────────────────────────────────────
 export const notificationsAPI = {
-  getAll:    ()    => api.get('/notifications'),
-  markRead:  (id)  => api.patch(`/notifications/${id}/read`),
-  markAllRead:()   => api.patch('/notifications/mark-all-read'),
-  delete:    (id)  => api.delete(`/notifications/${id}`),
+  getAll:         ()    => api.get('/notifications'),
+  getUnreadCount: ()    => api.get('/notifications/unread-count'),
+  markRead:       (id)  => api.patch(`/notifications/${id}/read`),
+  markAllRead:    ()    => api.patch('/notifications/mark-all-read'),
+  delete:         (id)  => api.delete(`/notifications/${id}`),
 }
 
 export default api

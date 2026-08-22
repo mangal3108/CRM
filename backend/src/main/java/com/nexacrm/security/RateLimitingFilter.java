@@ -80,9 +80,19 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     }
 
     private String resolveClientIp(HttpServletRequest request) {
+        // X-Forwarded-For is a client-appendable, comma-separated chain: each hop
+        // APPENDS the IP it saw, it never strips what the client already sent. With
+        // exactly one trusted proxy in front of this app (the platform's edge/LB),
+        // the trustworthy value is the LAST entry (added by that edge), not the
+        // first — the first entry is whatever the client put there themselves,
+        // so trusting it lets any client pick their own rate-limit bucket at will.
         String forwarded = request.getHeader("X-Forwarded-For");
         if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].trim();
+            String[] parts = forwarded.split(",");
+            String lastHop = parts[parts.length - 1].trim();
+            if (!lastHop.isBlank()) {
+                return lastHop;
+            }
         }
         String realIp = request.getHeader("X-Real-IP");
         if (realIp != null && !realIp.isBlank()) {

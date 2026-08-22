@@ -64,6 +64,13 @@ export const useIntegrationsStore = create((set, get) => ({
     }
   },
 
+  // Applies an IntegrationConfigResponse the caller already fetched some other
+  // way (e.g. the WhatsApp Embedded Signup exchange endpoint) to local state.
+  applyIntegrationResult: (id, row) => set((s) => ({
+    configs: { ...s.configs, [id]: row?.values || {} },
+    connected: { ...s.connected, [id]: !!row?.connected },
+  })),
+
   disconnect: (id) => set(s => ({
     connected: { ...s.connected, [id]: false },
     configs: { ...s.configs, [id]: {} },

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useIntegrationsStore } from '../store/integrationsStore'
+import MetaWhatsAppConnect from '../components/settings/MetaWhatsAppConnect'
 
 const INTEGRATIONS = [
   {
@@ -75,9 +76,9 @@ const INTEGRATIONS = [
   },
   {
     id: 'whatsapp', name: 'WhatsApp Business', category: 'Messaging',
-    tagline: 'Send WhatsApp messages via AKNexus',
-    description: 'Connect your AKNexus WhatsApp instance to send messages directly from Internite, workflows, lead automation, and the communication inbox.',
-    features: ['AKNexus API sending', 'Workflow WhatsApp actions', 'Lead auto-welcome messages', 'Legacy provider support'],
+    tagline: 'Connect via Facebook, or bring your own WhatsApp API',
+    description: 'Connect WhatsApp with the official Meta Embedded Signup, or use an AKNexus/Aiadrika instance, to send messages from Internite, workflows, lead automation, and the communication inbox.',
+    features: ['Meta Embedded Signup', 'AKNexus API sending', 'Workflow WhatsApp actions', 'Lead auto-welcome messages'],
     color: '#25D366', bg: '#F0FFF4',
     authType: 'apikey',
     docsUrl: 'https://app.aknexus.in/api_automation/docs',
@@ -374,8 +375,15 @@ function SetupModal({ integration, onClose }) {
             </div>
           </div>
 
+          {integration.id === 'whatsapp' && (
+            <MetaWhatsAppConnect onConnected={onClose} />
+          )}
+
           {/* Fields */}
           <div className="px-5 py-4 space-y-3">
+            {integration.id === 'whatsapp' && (
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest -mb-1">Or configure manually</p>
+            )}
             {getVisibleFields().map(f => (
               <div key={f.key}>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">{f.label}</label>

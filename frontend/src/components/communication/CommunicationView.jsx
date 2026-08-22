@@ -297,7 +297,7 @@ export default function CommunicationPage() {
   }, [fetchIntegrations, integrationsLoaded])
 
   const isChannelConnected = (channel) => {
-    if (channel === 'email' || channel === 'whatsapp') {
+    if (channel === 'email') {
       return true
     }
     return !!connected[channel]

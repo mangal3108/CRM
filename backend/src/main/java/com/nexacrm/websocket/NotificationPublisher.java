@@ -27,11 +27,18 @@ public class NotificationPublisher {
     }
 
     /**
-     * Broadcast notification to all connected users.
+     * Broadcast a notification to every connected client within one tenant only.
+     * Never broadcast to the bare "/topic/notifications" destination — every
+     * connected client across every tenant subscribes to the same topic name,
+     * so an unscoped broadcast leaks one company's data to every other company.
      */
-    public void broadcast(Object notification) {
-        log.debug("Broadcasting notification: {}", notification);
-        messagingTemplate.convertAndSend("/topic/notifications", notification);
+    public void broadcastToTenant(Long tenantId, Object notification) {
+        if (tenantId == null) {
+            log.warn("Skipped tenant broadcast with no tenantId: {}", notification);
+            return;
+        }
+        log.debug("Broadcasting notification to tenant {}: {}", tenantId, notification);
+        messagingTemplate.convertAndSend("/topic/notifications/tenant/" + tenantId, notification);
     }
 
     /**
@@ -49,10 +56,10 @@ public class NotificationPublisher {
     }
 
     /**
-     * Broadcast a new lead notification to all managers and admins.
+     * Broadcast a new lead notification to all managers and admins within one tenant.
      */
-    public void notifyNewLead(String leadName, String source) {
-        broadcast(Map.of(
+    public void notifyNewLead(Long tenantId, String leadName, String source) {
+        broadcastToTenant(tenantId, Map.of(
             "type", "LEAD",
             "title", "New Lead",
             "message", "New lead from " + source + ": " + leadName,

@@ -81,24 +81,31 @@ public class DashboardAnalyticsService {
     }
 
     public DashboardOverviewDTO overview() {
+        List<org.bson.Document> leadDocs = fetchLeadDocuments(OVERVIEW_LEAD_LIMIT);
+        Map<String, String> assignments = extractAssignments(leadDocs);
+        List<LeadDTO> leads = leadDocs.stream().map(d -> docToLeadDTO(d, assignments)).toList();
+        List<DealDTO> deals = fetchDealDocuments(WIDGET_DEAL_LIMIT).stream().map(this::docToDealDTO).toList();
+
         return new DashboardOverviewDTO(
-            List.of(),
-            List.of(),
-            buildFastInsights(List.of()),
-            List.of(),
-            List.of(),
+            leads,
+            deals,
+            buildFastInsights(leads),
+            buildRecentActivity(leads),
+            buildRecentCallSnapshots(leads),
             LocalDateTime.now().toString()
         );
     }
 
     public DashboardWidgetSnapshotDTO widgets() {
         long total = countLeads();
+        List<Lead> leads = fetchLeadEntities();
+        List<DealDTO> deals = fetchDealDocuments(WIDGET_DEAL_LIMIT).stream().map(this::docToDealDTO).toList();
 
         return new DashboardWidgetSnapshotDTO(
-            new DashboardWidgetSnapshotDTO.AgingCounts(total, 0, 0),
-            new DashboardWidgetSnapshotDTO.LeadSlaSummary(total, 0, total, 0, 0, null),
-            List.of(),
-            List.of(),
+            buildAgingCounts(leads),
+            buildSlaSummary(leads),
+            buildEmployeePerformance(leads),
+            buildMonthlyRevenue(deals),
             buildFunnelDataFromCounts(),
             buildLeadSourcesFromCounts(total),
             LocalDateTime.now().toString()

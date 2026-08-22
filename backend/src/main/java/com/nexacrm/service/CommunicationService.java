@@ -642,6 +642,12 @@ public class CommunicationService {
 
         Map<String, String> config = integrationService.getConfig("whatsapp");
         String provider = trim(config.get("provider")).toLowerCase(Locale.ROOT);
+
+        if ("meta".equals(provider)) {
+            sendViaMetaWhatsApp(number, body, config);
+            return;
+        }
+
         String aknexusToken = firstNonBlank(config.get("apiToken"), config.get("bearerToken"), defaultAknexusApiToken);
         if ("aknexus".equals(provider)
             || (!aknexusToken.isBlank() && !"aiadrika".equals(provider) && !"kriscelwa".equals(provider))) {
@@ -706,6 +712,140 @@ public class CommunicationService {
         } catch (Exception ex) {
             log.error("Aiadrika send failed: {}", ex.getMessage());
             throw new IllegalStateException("Failed to send WhatsApp message via Aiadrika.");
+        }
+    }
+
+    // ── WhatsApp via official Meta Cloud API (Embedded Signup) ─────
+
+    private void sendViaMetaWhatsApp(String number, String body, Map<String, String> config) {
+        String phoneNumberId = trim(config.get("phoneNumberId"));
+        String accessToken = trim(config.get("metaAccessToken"));
+        if (phoneNumberId.isBlank() || accessToken.isBlank()) {
+            throw new IllegalStateException("WhatsApp is not connected via Meta. Reconnect it in Integrations.");
+        }
+
+        String url = "https://graph.facebook.com/" + metaGraphApiVersion + "/" + phoneNumberId + "/messages";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(accessToken);
+
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("messaging_product", "whatsapp");
+        payload.put("to", number);
+        payload.put("type", "text");
+        payload.put("text", Map.of("body", body));
+
+        try {
+            String jsonBody = objectMapper.writeValueAsString(payload);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(
+                url, HttpMethod.POST, new HttpEntity<>(jsonBody, headers), String.class
+            );
+            String response = responseEntity.getBody();
+            String externalId = extractMetaMessageId(response);
+            tryPersistCommunication("WHATSAPP", "OUT", number, body, "SENT", externalId, response, "meta");
+            notifyOutboundCommunication("whatsapp", number, body);
+            log.info("WhatsApp sent via Meta Cloud API to {}", number);
+        } catch (HttpStatusCodeException ex) {
+            log.error("Meta WhatsApp API error {}: {}", ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw new IllegalStateException("Meta WhatsApp API error: " + ex.getResponseBodyAsString());
+        } catch (IllegalStateException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            log.error("Meta WhatsApp send failed: {}", ex.getMessage());
+            throw new IllegalStateException("Failed to send WhatsApp message via Meta.");
+        }
+    }
+
+    private String extractMetaMessageId(String response) {
+        if (response == null || response.isBlank()) {
+            return null;
+        }
+        try {
+            JsonNode messages = objectMapper.readTree(response).path("messages");
+            if (messages.isArray() && !messages.isEmpty()) {
+                return trim(messages.get(0).path("id").asText(""));
+            }
+        } catch (Exception ignored) {
+            // best-effort only — a missing external id just skips dedupe matching
+        }
+        return null;
+    }
+
+    /**
+     * Processes an inbound webhook event from the official Meta WhatsApp Cloud API.
+     * Unlike the AKNexus/Aiadrika webhook (single shared instance), a Meta webhook can
+     * carry events for any tenant's WhatsApp Business Account, so each event's phone
+     * number ID is resolved to its owning tenant before anything is persisted.
+     */
+    @Async
+    public void processMetaWhatsAppWebhookAsync(String rawBody) {
+        try {
+            JsonNode root = objectMapper.readTree(rawBody);
+            JsonNode entries = root.path("entry");
+            if (!entries.isArray()) return;
+
+            for (JsonNode entry : entries) {
+                JsonNode changes = entry.path("changes");
+                if (!changes.isArray()) continue;
+                for (JsonNode change : changes) {
+                    processMetaWhatsAppChange(change.path("value"));
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error processing Meta WhatsApp webhook", e);
+        }
+    }
+
+    private void processMetaWhatsAppChange(JsonNode value) {
+        String phoneNumberId = trim(value.at("/metadata/phone_number_id").asText(""));
+        if (phoneNumberId.isBlank()) {
+            return;
+        }
+
+        Long tenantId = integrationService.resolveTenantIdByWhatsAppPhoneNumberId(phoneNumberId);
+        if (tenantId == null) {
+            log.warn("Meta WhatsApp webhook received for unknown phone_number_id={}", phoneNumberId);
+            return;
+        }
+
+        TenantContext.setCurrentTenantId(tenantId);
+        try {
+            JsonNode messages = value.path("messages");
+            if (!messages.isArray()) return;
+
+            Map<String, String> contactNames = new HashMap<>();
+            JsonNode contacts = value.path("contacts");
+            if (contacts.isArray()) {
+                for (JsonNode contact : contacts) {
+                    String waId = trim(contact.path("wa_id").asText(""));
+                    String name = trim(contact.at("/profile/name").asText(""));
+                    if (!waId.isBlank()) contactNames.put(waId, name);
+                }
+            }
+
+            int saved = 0;
+            for (JsonNode message : messages) {
+                String from = trim(message.path("from").asText(""));
+                String mid = trim(message.path("id").asText(""));
+                String text = trim(message.at("/text/body").asText(""));
+                if (from.isBlank() || text.isBlank()) continue;
+                if (isDuplicateInboundEvent("WHATSAPP", mid)) continue;
+
+                String displayName = contactNames.getOrDefault(from, "");
+                boolean persisted = tryPersistCommunication(
+                    "WHATSAPP", "IN", from, text, "RECEIVED", mid, toJson(message), "meta", displayName
+                );
+                if (persisted) {
+                    saved++;
+                    notificationService.notifyInboundMessage("whatsapp", displayName.isBlank() ? from : displayName, text);
+                    sendAutoReplySafely("whatsapp", from);
+                }
+            }
+            if (saved > 0) {
+                log.info("Meta WhatsApp webhook processed, inbound saved={}", saved);
+            }
+        } finally {
+            TenantContext.clear();
         }
     }
 
