@@ -58,6 +58,7 @@ public class AIService {
     private final LeadRepository leadRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final IntegrationService integrationService;
 
     // ── Chat ──────────────────────────────────────────────────────
 
@@ -808,16 +809,17 @@ public class AIService {
     // ── Private helpers ───────────────────────────────────────────
 
     private String callMistralText(List<Map<String, String>> messages, int maxTokens, double temperature) {
-        if (!hasRealApiKey()) {
-            throw new IllegalStateException("MISTRAL_API_KEY is not configured");
+        String apiKey = resolveMistralApiKey();
+        if (apiKey.isEmpty()) {
+            throw new IllegalStateException("Mistral API key is not configured");
         }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(mistralApiKey);
+        headers.setBearerAuth(apiKey);
 
         Map<String, Object> payload = Map.of(
-            "model", model,
+            "model", resolveMistralModel(),
             "messages", messages,
             "max_tokens", maxTokens,
             "temperature", temperature
@@ -1018,9 +1020,30 @@ public class AIService {
     }
 
     private boolean hasRealApiKey() {
-        if (mistralApiKey == null) return false;
-        String key = mistralApiKey.trim();
-        return !key.isEmpty();
+        return !resolveMistralApiKey().isEmpty();
+    }
+
+    /**
+     * Prefer the tenant's own Mistral key saved via the Integrations page
+     * (per-company, so each tenant can bring their own) and fall back to the
+     * platform-wide MISTRAL_API_KEY env var when a tenant hasn't set one.
+     */
+    private String resolveMistralApiKey() {
+        Map<String, String> config = integrationService.getConfig("mistral_ai");
+        String tenantKey = config.get("apiKey");
+        if (tenantKey != null && !tenantKey.isBlank()) {
+            return tenantKey.trim();
+        }
+        return mistralApiKey == null ? "" : mistralApiKey.trim();
+    }
+
+    private String resolveMistralModel() {
+        Map<String, String> config = integrationService.getConfig("mistral_ai");
+        String tenantModel = config.get("model");
+        if (tenantModel != null && !tenantModel.isBlank()) {
+            return tenantModel.trim();
+        }
+        return model;
     }
 
     private String toJson(Object value) {

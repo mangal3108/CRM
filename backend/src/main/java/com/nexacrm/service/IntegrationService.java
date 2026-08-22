@@ -100,11 +100,14 @@ public class IntegrationService {
         Map<String, String> mergedValues = mergeValues(existingValues, values);
         validateRequired(mergedValues, required);
 
-        // Facebook/Instagram credentials are verified against the Graph API before
-        // being marked connected — pasting an arbitrary non-blank token no longer
-        // "connects" a channel that was never actually checked.
+        // Facebook/Instagram/Mistral credentials are verified against the real
+        // provider before being marked connected — pasting an arbitrary
+        // non-blank value no longer "connects" something that was never checked.
         if ("facebook".equals(normalizedId) || "instagram".equals(normalizedId)) {
             verifyMetaChannelCredentials(normalizedId, mergedValues);
+        }
+        if ("mistral_ai".equals(normalizedId)) {
+            verifyMistralCredentials(mergedValues);
         }
 
         IntegrationConfig config = existing != null ? existing : new IntegrationConfig();
@@ -135,6 +138,9 @@ public class IntegrationService {
         }
         if ("facebook".equals(normalizedId) || "instagram".equals(normalizedId)) {
             return verifyMetaChannelCredentials(normalizedId, testValues);
+        }
+        if ("mistral_ai".equals(normalizedId)) {
+            return verifyMistralCredentials(testValues);
         }
 
         return Map.of(
@@ -292,6 +298,33 @@ public class IntegrationService {
                 "Could not verify this " + normalizedId + " account with Meta. Check the ID and access token: "
                     + ex.getResponseBodyAsString()
             );
+        }
+    }
+
+    /** Verifies a Mistral API key actually works by calling Mistral's models endpoint directly. */
+    private Map<String, Object> verifyMistralCredentials(Map<String, String> values) {
+        String apiKey = trim(values.get("apiKey"));
+        if (apiKey.isBlank()) {
+            throw new IllegalStateException("Mistral API key is missing.");
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(apiKey);
+        try {
+            restTemplate.exchange(
+                "https://api.mistral.ai/v1/models",
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                Map.class
+            );
+            return Map.of(
+                "ok", true,
+                "message", "Verified Mistral API key.",
+                "integration", "mistral_ai"
+            );
+        } catch (HttpStatusCodeException ex) {
+            log.warn("Mistral credential verification failed: {}", ex.getResponseBodyAsString());
+            throw new IllegalStateException("Could not verify this Mistral API key: " + ex.getResponseBodyAsString());
         }
     }
 
